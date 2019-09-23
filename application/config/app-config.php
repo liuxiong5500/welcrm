@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 //define('APP_BASE_URL','http://welcrm.web.webuz.com/');
-define('APP_BASE_URL','http://welcrm-dev.com//');
+define('APP_BASE_URL','http://welcrm-dev.com/');
 /*
 |--------------------------------------------------------------------------
 | Encryption Key
