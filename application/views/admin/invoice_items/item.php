@@ -16,24 +16,26 @@
                         <div class="alert alert-warning affect-warning hide">
                             <?php echo _l('changing_items_affect_warning'); ?>
                         </div>
-                        <?php echo render_input('description','invoice_item_add_edit_description'); ?>
-                        <?php echo render_textarea('long_description','invoice_item_long_description'); ?>
-                        <div class="form-group">
-                        <label for="rate" class="control-label">
-                            <?php echo _l('invoice_item_add_edit_rate_currency',$base_currency->name . ' <small>('._l('base_currency_string').')</small>'); ?></label>
-                            <input type="number" id="rate" name="rate" class="form-control" value="">
-                        </div>
-                        <?php
-                            foreach($currencies as $currency){
-                                if($currency['isdefault'] == 0 && total_rows('tblclients',array('default_currency'=>$currency['id'])) > 0){ ?>
-                                <div class="form-group">
-                                    <label for="rate_currency_<?php echo $currency['id']; ?>" class="control-label">
-                                        <?php echo _l('invoice_item_add_edit_rate_currency',$currency['name']); ?></label>
-                                        <input type="number" id="rate_currency_<?php echo $currency['id']; ?>" name="rate_currency_<?php echo $currency['id']; ?>" class="form-control" value="">
-                                    </div>
-                             <?php   }
-                            }
-                        ?>
+                        <?php echo render_input('art','purchase_order_art'); ?>
+                        <?php echo render_input('dis','purchase_order_dis'); ?>
+                        <?php echo render_input('col','purchase_order_col'); ?>
+                        <?php echo render_textarea('description','purchase_order_composition'); ?>
+<!--                        <div class="form-group">-->
+<!--                        <label for="rate" class="control-label">-->
+<!--                            --><?php //echo _l('invoice_item_add_edit_rate_currency',$base_currency->name . ' <small>('._l('base_currency_string').')</small>'); ?><!--</label>-->
+<!--                            <input type="number" id="rate" name="rate" class="form-control" value="">-->
+<!--                        </div>-->
+<!--                        --><?php
+//                            foreach($currencies as $currency){
+//                                if($currency['isdefault'] == 0 && total_rows('tblclients',array('default_currency'=>$currency['id'])) > 0){ ?>
+<!--                                <div class="form-group">-->
+<!--                                    <label for="rate_currency_--><?php //echo $currency['id']; ?><!--" class="control-label">-->
+<!--                                        --><?php //echo _l('invoice_item_add_edit_rate_currency',$currency['name']); ?><!--</label>-->
+<!--                                        <input type="number" id="rate_currency_--><?php //echo $currency['id']; ?><!--" name="rate_currency_--><?php //echo $currency['id']; ?><!--" class="form-control" value="">-->
+<!--                                    </div>-->
+<!--                             --><?php //  }
+//                            }
+//                        ?>
                         <div class="row">
                             <div class="col-md-6">
                              <div class="form-group">
@@ -59,7 +61,11 @@
                     </div>
                 </div>
                 <div class="clearfix mbot15"></div>
-                <?php echo render_input('unit','unit'); ?>
+                        <?php echo render_input('weight','purchase_order_weight'); ?>
+                        <?php echo render_input('width','purchase_order_width'); ?>
+                        <?php echo render_textarea('color','purchase_order_color'); ?>
+                        <?php echo render_textarea('style','purchase_order_style'); ?>
+                        <?php echo render_input('unit_price','purchase_order_unit_price'); ?>
                 <div id="custom_fields_items">
                     <?php echo render_custom_fields('items'); ?>
                 </div>

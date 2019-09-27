@@ -156,7 +156,7 @@
             </div>
             <div class="col-md-12">
                 <div class="panel_s">
-                    <?php $this->load->view('admin/estimates/_add_edit_items', ['type' => 'purchase-order']); ?>
+                    <?php $this->load->view('admin/estimates/_add_edit_items2', ['type' => 'purchase-order']); ?>
                 </div>
             </div>
             <?php echo form_close(); ?>

@@ -4128,3 +4128,19 @@ $lang['finished'] = 'Finished';
 $lang['shipped'] = 'Shipped';
 $lang['item_logs_add'] = 'Add';
 $lang['purchase_order_item_logs'] = 'Purchase Order Item Logs';
+
+
+$lang['purchase_order_marzoni'] = 'Marzoni';
+$lang['purchase_order_art'] = 'ART';
+$lang['purchase_order_dis'] = 'DIS';
+$lang['purchase_order_col'] = 'COL';
+$lang['purchase_order_composition'] = 'Composition';
+$lang['purchase_order_weight'] = 'Weight';
+$lang['purchase_order_width'] = 'Width';
+$lang['purchase_order_color'] = 'Color';
+$lang['purchase_order_style'] = 'Style';
+$lang['purchase_order_unit_price'] = 'Unit Price';
+$lang['purchase_order_amount'] = 'Amount';
+$lang['purchase_order_qty'] = 'Qty';
+$lang['purchase_order_ex_mill'] = 'Ex Mill';
+$lang['purchase_order_eta_date'] = 'ETA Date';

@@ -62,6 +62,7 @@ class Purchase_orders extends Admin_controller
         $data['shipment_terms'] = $this->shipment_terms_model->get();
         $data['base_currency'] = $this->currencies_model->get_base_currency();
         $data['title'] = $title;
+
         $this->load->view('admin/purchase_orders/order', $data);
     }
 

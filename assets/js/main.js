@@ -6103,12 +6103,22 @@ function add_item_to_preview(id) {
     requestGetJSON('invoice_items/get_item_by_id/' + id).done(function (response) {
         clear_item_preview_values();
 
+        $('.main input[name="art"]').val(response.art);
+        $('.main input[name="dis"]').val(response.dis);
+        $('.main input[name="col"]').val(response.col);
         $('.main textarea[name="description"]').val(response.description);
-        $('.main textarea[name="long_description"]').val(response.long_description.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, " "));
+        $('.main input[name="weight"]').val(response.weight);
+        $('.main input[name="width"]').val(response.width);
+        $('.main textarea[name="color"]').val(response.color);
+        $('.main textarea[name="style"]').val(response.style);
+        $('.main input[name="unit_price"]').val(response.unit_price);
+        $('.main input[name="qty"]').val(response.qty);
+
+        // $('.main textarea[name="long_description"]').val(response.long_description.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, " "));
 
         _set_item_preview_custom_fields_array(response.custom_fields);
 
-        $('.main input[name="quantity"]').val(1);
+
 
         var taxSelectedArray = [];
         if (response.taxname && response.taxrate) {
@@ -7621,3 +7631,228 @@ function requestGetJSON(uri, params) {
     params.dataType = 'json';
     return requestGet(uri, params);
 }
+
+function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
+
+    // If not custom data passed get from the preview
+    data = typeof (data) == 'undefined' || data == 'undefined' ? get_item_preview_values2() : data;
+    // if (data.description === "" && data.long_description === "" && data.rate === "") {
+    //     return;
+    // }
+    var table_row = '';
+    var unit_placeholder = '';
+    var item_key = $("body").find('tbody .item').length + 1;
+
+    table_row += '<tr class="sortable item" data-merge-invoice="' + merge_invoice + '" data-bill-expense="' + bill_expense + '">';
+
+    table_row += '<td class="dragger">';
+
+    // Check if quantity is number
+    if (isNaN(data.qty)) {
+        data.qty = 1;
+    }
+
+    // Check if rate is number
+    if (data.unit_price === '' || isNaN(data.unit_price)) {
+        data.unit_price = 0;
+    }
+
+    var amount = data.unit_price * data.qty;
+    amount = accounting.formatNumber(amount);
+    var tax_name = 'newitems[' + item_key + '][taxname][]';
+    $("body").append('<div class="dt-loader"></div>');
+    var regex = /<br[^>]*>/gi;
+    get_taxes_dropdown_template(tax_name, data.taxname).done(function (tax_dropdown) {
+
+        // order input
+        table_row += '<input type="hidden" class="order" name="newitems[' + item_key + '][order]">';
+
+        table_row += '</td>';
+
+        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" class="form-control"></td>';
+
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" min="0" value="' + data.art + '" class="form-control"></td>';
+
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][dis]" min="0" value="' + data.dis + '" class="form-control"></td>';
+
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][col]" min="0" value="' + data.col + '" class="form-control"></td>';
+
+        table_row += '<td><textarea name="newitems[' + item_key + '][description]" class="form-control" rows="5">' + data.description.replace(regex, "\n") + '</textarea></td>';
+
+        table_row += '<td><input type="number" name="newitems[' + item_key + '][weight]" min="0" value="' + data.weight + '" class="form-control"></td>';
+
+        table_row += '<td><input type="number" name="newitems[' + item_key + '][width]" min="0" value="' + data.width + '" class="form-control"></td>';
+
+        table_row += '<td><textarea name="newitems[' + item_key + '][color]" class="form-control" rows="5">' + data.color + '</textarea></td>';
+
+        table_row += '<td><textarea name="newitems[' + item_key + '][style]" class="form-control" rows="5">' + data.style + '</textarea></td>';
+
+        var custom_fields = $('tr.main td.custom_field');
+        var cf_has_required = false;
+
+        if (custom_fields.length > 0) {
+
+            $.each(custom_fields, function () {
+
+                var cf = $(this).clone();
+                var cf_html = '';
+                var cf_field = $(this).find('[data-fieldid]');
+                var cf_name = 'newitems[' + item_key + '][custom_fields][items][' + cf_field.attr('data-fieldid') + ']';
+
+                if (cf_field.is(':checkbox')) {
+
+                    var checked = $(this).find('input[type="checkbox"]:checked');
+                    var checkboxes = cf.find('input[type="checkbox"]');
+
+                    $.each(checkboxes, function (i, e) {
+                        var random_key = Math.random().toString(20).slice(2);
+                        $(this).attr('id', random_key)
+                            .attr('name', cf_name)
+                            .next('label').attr('for', random_key);
+                        if ($(this).attr('data-custom-field-required') == '1') {
+                            cf_has_required = true;
+                        }
+                    });
+
+                    $.each(checked, function (i, e) {
+                        cf.find('input[value="' + $(e).val() + '"]')
+                            .attr('checked', true);
+                    });
+
+                    cf_html = cf.html();
+
+                } else if (cf_field.is('input') || cf_field.is('textarea')) {
+                    if (cf_field.is('input')) {
+                        cf.find('[data-fieldid]').attr('value', cf_field.val());
+                    } else {
+                        cf.find('[data-fieldid]').html(cf_field.val());
+                    }
+                    cf.find('[data-fieldid]').attr('name', cf_name);
+                    if (cf.find('[data-fieldid]').attr('data-custom-field-required') == '1') {
+                        cf_has_required = true;
+                    }
+                    cf_html = cf.html();
+                } else if (cf_field.is('select')) {
+
+                    if ($(this).attr('data-custom-field-required') == '1') {
+                        cf_has_required = true;
+                    }
+
+                    var selected = $(this).find('select[data-fieldid]').selectpicker('val');
+                    selected = typeof (selected != 'array') ? new Array(selected) : selected;
+
+                    // Check if is multidimensional by multi-select customfield
+                    selected = selected[0].constructor === Array ? selected[0] : selected;
+
+                    var selectNow = cf.find('select');
+                    var $wrapper = $('<div/>');
+                    selectNow.attr('name', cf_name);
+
+                    var $select = selectNow.clone();
+                    $wrapper.append($select);
+                    $.each(selected, function (i, e) {
+                        $wrapper.find('select option[value="' + e + '"]').attr('selected', true);
+                    });
+
+                    cf_html = $wrapper.html();
+                }
+                table_row += '<td class="custom_field">' + cf_html + '</td>';
+            });
+        }
+
+        table_row += '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="newitems[' + item_key + '][unit_price]" value="' + data.unit_price + '" class="form-control"></td>';
+
+        table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control"></td>';
+
+        table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
+
+        table_row += '<td class="amount" align="right">' + amount + '</td>';
+
+        table_row += '<td></td>';
+
+        table_row += '<td></td>';
+
+        table_row += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' + itemid + '); return false;"><i class="fa fa-trash"></i></a></td>';
+
+        table_row += '</tr>';
+
+        $('table.items tbody').append(table_row);
+
+        $(document).trigger({
+            type: "item-added-to-table",
+            data: data,
+            row: table_row
+        });
+
+        setTimeout(function () {
+            calculate_total();
+        }, 15);
+
+        var billed_task = $('input[name="task_id"]').val();
+        var billed_expense = $('input[name="expense_id"]').val();
+
+        if (billed_task !== '' && typeof (billed_task) != 'undefined') {
+            billed_tasks = billed_task.split(',');
+            $.each(billed_tasks, function (i, obj) {
+                $('#billed-tasks').append(hidden_input('billed_tasks[' + item_key + '][]', obj));
+            });
+        }
+
+        if (billed_expense !== '' && typeof (billed_expense) != 'undefined') {
+            billed_expenses = billed_expense.split(',');
+            $.each(billed_expenses, function (i, obj) {
+                $('#billed-expenses').append(hidden_input('billed_expenses[' + item_key + '][]', obj));
+            });
+        }
+
+        if ($('#item_select').hasClass('ajax-search') && $('#item_select').selectpicker('val') !== '') {
+            $('#item_select').prepend('<option></option>');
+        }
+
+        init_selectpicker();
+        init_datepicker();
+        init_color_pickers();
+        clear_item_preview_values();
+        reorder_items();
+
+        $('body').find('#items-warning').remove();
+        $("body").find('.dt-loader').remove();
+        $('#item_select').selectpicker('val', '');
+
+        if (cf_has_required && $('.invoice-form').length) {
+            validate_invoice_form();
+        } else if (cf_has_required && $('.estimate-form').length) {
+            validate_estimate_form();
+        } else if (cf_has_required && $('.proposal-form').length) {
+            validate_proposal_form();
+        } else if (cf_has_required && $('.credit-note-form').length) {
+            validate_credit_note_form();
+        }
+
+        return true;
+
+    });
+
+    return false;
+}
+
+function get_item_preview_values2() {
+    var response = {};
+    response.marzoni = $('.main input[name="marzoni"]').val();
+    response.art = $('.main input[name="art"]').val();
+    response.dis = $('.main input[name="dis"]').val();
+    response.col = $('.main input[name="col"]').val();
+    response.description = $('.main textarea[name="description"]').val();
+    response.weight = $('.main input[name="weight"]').val();
+    response.width = $('.main input[name="width"]').val();
+    response.color = $('.main textarea[name="color"]').val();
+    response.style = $('.main textarea[name="style"]').val();
+    response.unit_price = $('.main input[name="unit_price"]').val();
+    response.qty = $('.main input[name="qty"]').val();
+    response.taxname = $('.main select.tax').selectpicker('val');
+    response.amount = $('.main input[name="amount"]').val();
+    response.ex_mill = $('.main input[name="ex_mill"]').val();
+    response.eta_date = $('.main input[name="eta_date"]').val();
+    return response;
+}
+

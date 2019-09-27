@@ -22,10 +22,10 @@ class Invoice_items_model extends CRM_Model
                 $rateCurrencyColumns .= $column . ',';
             }
         }
-        $this->db->select($rateCurrencyColumns . 'tblitems.id as itemid,rate,
+        $this->db->select($rateCurrencyColumns . 'tblitems.id as itemid,art,description,dis,group_id,col,weight,width,color,style,unit_price,
             t1.taxrate as taxrate,t1.id as taxid,t1.name as taxname,
             t2.taxrate as taxrate_2,t2.id as taxid_2,t2.name as taxname_2,
-            description,long_description,group_id,tblitems_groups.name as group_name,unit');
+            tblitems_groups.name as group_name');
         $this->db->from('tblitems');
         $this->db->join('tbltaxes t1', 't1.id = tblitems.tax', 'left');
         $this->db->join('tbltaxes t2', 't2.id = tblitems.tax2', 'left');
@@ -114,7 +114,7 @@ class Invoice_items_model extends CRM_Model
             if (isset($custom_fields)) {
                 handle_custom_fields_post($insert_id, $custom_fields, true);
             }
-            logActivity('New Invoice Item Added [ID:' . $insert_id . ', ' . $data['description'] . ']');
+//            logActivity('New Invoice Item Added [ID:' . $insert_id . ', ' . $data['description'] . ']');
 
             return $insert_id;
         }
@@ -168,7 +168,7 @@ class Invoice_items_model extends CRM_Model
         $this->db->where('id', $itemid);
         $this->db->update('tblitems', $data);
         if ($this->db->affected_rows() > 0) {
-            logActivity('Invoice Item Updated [ID: ' . $itemid . ', ' . $data['description'] . ']');
+//            logActivity('Invoice Item Updated [ID: ' . $itemid . ', ' . $data['description'] . ']');
             $affectedRows++;
         }
 
@@ -183,8 +183,8 @@ class Invoice_items_model extends CRM_Model
 
     public function search($q)
     {
-        $this->db->select('rate, id, description as name, long_description as subtext');
-        $this->db->like('description', $q);
+        $this->db->select('rate, id, composition as name, long_description as subtext');
+        $this->db->like('composition', $q);
         $this->db->or_like('long_description', $q);
 
         $items = $this->db->get('tblitems')->result_array();

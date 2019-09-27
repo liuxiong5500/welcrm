@@ -141,7 +141,7 @@ class Invoice_items extends Admin_controller
     {
         if ($this->input->is_ajax_request()) {
             $item                     = $this->invoice_items_model->get($id);
-            $item->long_description   = nl2br($item->long_description);
+//            $item->long_description   = nl2br($item->long_description);
             $item->custom_fields_html = render_custom_fields('items', $id, [], ['items_pr' => true]);
             $item->custom_fields      = [];
 
