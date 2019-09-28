@@ -636,15 +636,23 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
     $CI = &get_instance();
 
     $CI->db->insert('tblitems_in', [
-                    'description'      => $item['description'],
-                    'long_description' => nl2br($item['long_description']),
-                    'qty'              => $item['qty'],
-                    'rate'             => number_format($item['rate'], get_decimal_places(), '.', ''),
-                    'rel_id'           => $rel_id,
-                    'rel_type'         => $rel_type,
-                    'item_order'       => $item['order'],
-                    'unit'             => $item['unit'],
-                ]);
+        'marzoni' => $item['marzoni'],
+        'art' => $item['art'],
+        'dis' => $item['dis'],
+        'col' => $item['col'],
+        'weight' => $item['weight'],
+        'width' => $item['width'],
+        'color' => $item['color'],
+        'style' => $item['style'],
+        'qty' => $item['qty'],
+        'unit_price' => $item['unit_price'],
+        'description'      => $item['description'],
+        'rel_id'           => $rel_id,
+        'rel_type'         => $rel_type,
+        'item_order'       => $item['order'],
+        'ex_mill'       => $item['ex_mill'],
+        'eta_date'       => $item['eta_date'],
+    ]);
 
     $id = $CI->db->insert_id();
 
@@ -666,23 +674,36 @@ function update_sales_item_post($item_id, $data, $field = '')
 {
     $update = [];
     if ($field !== '') {
-        if ($field == 'long_description') {
-            $update[$field] = nl2br($data[$field]);
-        } elseif ($field == 'rate') {
-            $update[$field] = number_format($data[$field], get_decimal_places(), '.', '');
-        } elseif ($field == 'item_order') {
+//        if ($field == 'long_description') {
+//            $update[$field] = nl2br($data[$field]);
+//        } elseif ($field == 'rate') {
+//            $update[$field] = number_format($data[$field], get_decimal_places(), '.', '');
+//        } elseif ($field == 'item_order') {
+//            $update[$field] = $data['order'];
+//        } else {
+//            $update[$field] = $data[$field];
+//        }
+        if ($field == 'item_order') {
             $update[$field] = $data['order'];
         } else {
             $update[$field] = $data[$field];
         }
     } else {
         $update = [
-            'item_order'       => $data['order'],
+            'marzoni' => $data['marzoni'],
+            'art' => $data['art'],
+            'dis' => $data['dis'],
+            'col' => $data['col'],
+            'weight' => $data['weight'],
+            'width' => $data['width'],
+            'color' => $data['color'],
+            'style' => $data['style'],
+            'qty' => $data['qty'],
+            'unit_price' => $data['unit_price'],
             'description'      => $data['description'],
-            'long_description' => nl2br($data['long_description']),
-            'rate'             => number_format($data['rate'], get_decimal_places(), '.', ''),
-            'qty'              => $data['qty'],
-            'unit'             => $data['unit'],
+            'item_order'       => $data['order'],
+            'ex_mill'       => $data['ex_mill'],
+            'eta_date'       => $data['eta_date'],
         ];
     }
 

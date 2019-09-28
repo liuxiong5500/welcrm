@@ -66,11 +66,11 @@
                     $qty_heading = _l('estimate_table_quantity_heading') . '/' . _l('estimate_table_hours_heading');
                 }
                 ?>
-                <th width="10%" class="qty" align="center"><?php echo $qty_heading; ?></th>
-                <th width="25%" align="center"><?php echo _l('estimate_table_tax_heading'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
-                <th width="15%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
-                <th width="20%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
+                <th width="6%" class="qty" align="center"><?php echo $qty_heading; ?></th>
+                <th width="6%" align="center"><?php echo _l('estimate_table_tax_heading'); ?></th>
+                <th width="6%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
+                <th width="6%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
+                <th width="6%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
                 <th align="center"><i class="fa fa-cog"></i></th>
             </tr>
             </thead>
@@ -145,14 +145,13 @@
                 </td>
 
                 <td>
-                    <input type="text" placeholder="<?php echo _l('purchase_order_ex_mill'); ?>" name="ex_mill"
-                           class="form-control">
+                    <input type="text" id="po_date" placeholder="<?php echo _l('purchase_order_ex_mill'); ?>" name="ex_mill"
+                           class="form-control datepicker">
                 </td>
                 <td>
                     <input type="text" placeholder="<?php echo _l('purchase_order_eta_date'); ?>" name="eta_date"
-                           class="form-control">
+                           class="form-control datepicker">
                 </td>
-                <td></td>
                 <td>
                     <?php
                     $new_item = 'undefined';
@@ -191,15 +190,16 @@
                     }
 //                    print_r($items_indicator);die;
                     $table_row .= form_hidden('' . $items_indicator . '[' . $i . '][itemid]', $item['id']);
-                    $amount = $item['rate'] * $item['qty'];
+                    $amount = $item['unit_price'] * $item['qty'];
                     $amount = _format_number($amount);
+                    $table_row .= form_hidden('isedit');
                     // order input
                     $table_row .= '<input type="hidden" class="order" name="' . $items_indicator . '[' . $i . '][order]">';
                     $table_row .= '</td>';
 
                     $table_row .= '<td class="bold"><input type="number" name="' . $items_indicator . '[' . $i . '][marzoni]" min="0" value="' . $item['marzoni'] . '" class="form-control"></td>';
 
-                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][art]" min="0"  value="' . $item['art'] . '" class="form-control"></td>';
+                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][art]" value="' . $item['art'] . '" class="form-control"></td>';
 
                     $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][dis]" min="0"  value="' . $item['dis'] . '" class="form-control"></td>';
 
@@ -222,8 +222,8 @@
                     $table_row .= '<td class="rate"><input type="number" data-toggle="tooltip" title="' . _l('numbers_not_formatted_while_editing') . '" onblur="calculate_total();" onchange="calculate_total();" name="' . $items_indicator . '[' . $i . '][qty]" value="' . $item['qty'] . '" class="form-control"></td>';
                     $table_row .= '<td class="taxrate">' . $this->misc_model->get_taxes_dropdown_template('' . $items_indicator . '[' . $i . '][taxname][]', $estimate_item_taxes, (isset($is_proposal) ? 'proposal' : 'estimate'), $item['id'], true, $manual) . '</td>';
                     $table_row .= '<td class="amount" align="right">' . $amount . '</td>';
-                    $table_row .= '<td></td>';
-                    $table_row .= '<td></td>';
+                    $table_row .= '<td><input type="text" id="po_date" name="' . $items_indicator . '[' . $i . '][ex_mill]" value="' . $item['ex_mill'] . '" class="form-control datepicker"></td>';
+                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][eta_date]" value="' . $item['eta_date'] . '" class="form-control datepicker"></td>';
                     $table_row .= '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' . $item['id'] . '); return false;"><i class="fa fa-times"></i></a></td>';
                     $table_row .= '</tr>';
                     echo $table_row;

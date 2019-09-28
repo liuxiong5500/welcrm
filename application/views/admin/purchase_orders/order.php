@@ -11,6 +11,9 @@
                                 <?php $value = (isset($estimate) ? $estimate->order_number : ''); ?>
                                 <?php echo render_input('order_number', 'purchase_order_number', $value, 'text'); ?>
                                 <?php
+                                if ($value) {
+                                    echo form_hidden('isedit');
+                                }
                                 $selected = '';
                                 $s_attrs = array('data-show-subtext' => true);
                                 foreach ($suppliers as $supplier) {

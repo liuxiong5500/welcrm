@@ -7671,7 +7671,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" class="form-control"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" min="0" value="' + data.art + '" class="form-control"></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" value="' + data.art + '" class="form-control"></td>';
 
         table_row += '<td><input type="text" name="newitems[' + item_key + '][dis]" min="0" value="' + data.dis + '" class="form-control"></td>';
 
@@ -7768,9 +7768,9 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '<td class="amount" align="right">' + amount + '</td>';
 
-        table_row += '<td></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][ex_mill]" value="' + data.ex_mill + '" class="form-control datepicker"></td>';
 
-        table_row += '<td></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][eta_date]" value="' + data.eta_date + '" class="form-control datepicker"></td>';
 
         table_row += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' + itemid + '); return false;"><i class="fa fa-trash"></i></a></td>';
 
@@ -7812,7 +7812,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
         init_selectpicker();
         init_datepicker();
         init_color_pickers();
-        clear_item_preview_values();
+        clear_item_preview_values2();
         reorder_items();
 
         $('body').find('#items-warning').remove();
@@ -7854,5 +7854,35 @@ function get_item_preview_values2() {
     response.ex_mill = $('.main input[name="ex_mill"]').val();
     response.eta_date = $('.main input[name="eta_date"]').val();
     return response;
+}
+
+function clear_item_preview_values2(default_taxes) {
+
+    // Get the last taxes applied to be available for the next item
+    var last_taxes_applied = $('table.items tbody').find('tr:last-child').find('select').selectpicker('val');
+    var previewArea = $('.main');
+
+    previewArea.find('textarea').val(''); // includes cf
+    previewArea.find('td.custom_field input[type="checkbox"]').prop('checked', false); // cf
+    previewArea.find('td.custom_field input:not(:checkbox):not(:hidden)').val(''); // cf // not hidden for chkbox hidden helpers
+    previewArea.find('td.custom_field select').selectpicker('val', ''); // cf
+    previewArea.find('select.tax').selectpicker('val', last_taxes_applied);
+    previewArea.find('input[name="marzoni"]').val('');
+    previewArea.find('input[name="art"]').val('');
+    previewArea.find('input[name="dis"]').val('');
+    previewArea.find('input[name="col"]').val('');
+    previewArea.find('input[name="description"]').val('');
+    previewArea.find('input[name="weight"]').val('');
+    previewArea.find('input[name="width"]').val('');
+    previewArea.find('input[name="color"]').val('');
+    previewArea.find('input[name="style"]').val('');
+    previewArea.find('input[name="unit_price"]').val('');
+    previewArea.find('input[name="qty"]').val('');
+    previewArea.find('input[name="amount"]').val('');
+    previewArea.find('input[name="ex_mill"]').val('');
+    previewArea.find('input[name="eta_date"]').val('');
+
+    $('input[name="task_id"]').val('');
+    $('input[name="expense_id"]').val('');
 }
 
