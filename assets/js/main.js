@@ -7764,7 +7764,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control"></td>';
 
-        table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
+        // table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
 
         table_row += '<td class="amount" align="right">' + amount + '</td>';
 

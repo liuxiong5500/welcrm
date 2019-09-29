@@ -38,25 +38,25 @@
             <thead>
             <tr>
                 <th></th>
-                <th width="20%" align="center">
+                <th width="10%" align="center">
                     <i class="fa fa-exclamation-circle" aria-hidden="true"
                        data-toggle="tooltip"
                        data-title="<?php echo _l('item_description_new_lines_notice'); ?>">
                     </i> <?php echo _l('purchase_order_marzoni'); ?>
                 </th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_art'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_dis'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_col'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_composition'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_weight'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_width'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_color'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_style'); ?></th>
-                <th width="25%" align="center"><?php echo _l('purchase_order_unit_price'); ?></th>
+                <th width="4%" align="center"><?php echo _l('purchase_order_art'); ?></th>
+                <th width="2%" align="center"><?php echo _l('purchase_order_dis'); ?></th>
+                <th width="2%" align="center"><?php echo _l('purchase_order_col'); ?></th>
+                <th width="13%" align="center"><?php echo _l('purchase_order_composition'); ?></th>
+                <th width="2%" align="center"><?php echo _l('purchase_order_weight'); ?></th>
+                <th width="2%" align="center"><?php echo _l('purchase_order_width'); ?></th>
+                <th width="13%" align="center"><?php echo _l('purchase_order_color'); ?></th>
+                <th width="13%" align="center"><?php echo _l('purchase_order_style'); ?></th>
+                <th width="5%" align="center"><?php echo _l('purchase_order_unit_price'); ?></th>
                 <?php
                 $custom_fields = get_custom_fields('items');
                 foreach ($custom_fields as $cf) {
-                    echo '<th width="15%" align="center" class="custom_field">' . $cf['name'] . '</th>';
+                    echo '<th width="2%" align="center" class="custom_field">' . $cf['name'] . '</th>';
                 }
 
                 $qty_heading = _l('estimate_table_quantity_heading');
@@ -66,11 +66,11 @@
                     $qty_heading = _l('estimate_table_quantity_heading') . '/' . _l('estimate_table_hours_heading');
                 }
                 ?>
-                <th width="6%" class="qty" align="center"><?php echo $qty_heading; ?></th>
-                <th width="6%" align="center"><?php echo _l('estimate_table_tax_heading'); ?></th>
-                <th width="6%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
-                <th width="6%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
-                <th width="6%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
+                <th width="5%" class="qty" align="center"><?php echo $qty_heading; ?></th>
+<!--                <th width="6%" align="center">--><?php //echo _l('estimate_table_tax_heading'); ?><!--</th>-->
+                <th width="5%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
+                <th width="12%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
+                <th width="12%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
                 <th align="center"><i class="fa fa-cog"></i></th>
             </tr>
             </thead>
@@ -122,23 +122,23 @@
                     <input type="number" name="qty" class="form-control"
                            placeholder="<?php echo _l('purchase_order_qty'); ?>">
                 </td>
-                <td>
-                    <?php
-                    $default_tax = unserialize(get_option('default_tax'));
-                    $select = '<select class="selectpicker display-block tax main-tax" data-width="100%" name="taxname" multiple data-none-selected-text="' . _l('no_tax') . '">';
-                    foreach ($taxes as $tax) {
-                        $selected = '';
-                        if (is_array($default_tax)) {
-                            if (in_array($tax['name'] . '|' . $tax['taxrate'], $default_tax)) {
-                                $selected = ' selected ';
-                            }
-                        }
-                        $select .= '<option value="' . $tax['name'] . '|' . $tax['taxrate'] . '"' . $selected . 'data-taxrate="' . $tax['taxrate'] . '" data-taxname="' . $tax['name'] . '" data-subtext="' . $tax['name'] . '">' . $tax['taxrate'] . '%</option>';
-                    }
-                    $select .= '</select>';
-                    echo $select;
-                    ?>
-                </td>
+<!--                <td>-->
+<!--                    --><?php
+//                    $default_tax = unserialize(get_option('default_tax'));
+//                    $select = '<select class="selectpicker display-block tax main-tax" data-width="100%" name="taxname" multiple data-none-selected-text="' . _l('no_tax') . '">';
+//                    foreach ($taxes as $tax) {
+//                        $selected = '';
+//                        if (is_array($default_tax)) {
+//                            if (in_array($tax['name'] . '|' . $tax['taxrate'], $default_tax)) {
+//                                $selected = ' selected ';
+//                            }
+//                        }
+//                        $select .= '<option value="' . $tax['name'] . '|' . $tax['taxrate'] . '"' . $selected . 'data-taxrate="' . $tax['taxrate'] . '" data-taxname="' . $tax['name'] . '" data-subtext="' . $tax['name'] . '">' . $tax['taxrate'] . '%</option>';
+//                    }
+//                    $select .= '</select>';
+//                    echo $select;
+//                    ?>
+<!--                </td>-->
                 <td>
                     <input type="number" name="amount" class="form-control"
                            placeholder="<?php echo _l('purchase_order_amount'); ?>">
@@ -220,7 +220,7 @@
                     $table_row .= '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="' . $items_indicator . '[' . $i . '][unit_price]" value="' . $item['unit_price'] . '" class="form-control">';
                     
                     $table_row .= '<td class="rate"><input type="number" data-toggle="tooltip" title="' . _l('numbers_not_formatted_while_editing') . '" onblur="calculate_total();" onchange="calculate_total();" name="' . $items_indicator . '[' . $i . '][qty]" value="' . $item['qty'] . '" class="form-control"></td>';
-                    $table_row .= '<td class="taxrate">' . $this->misc_model->get_taxes_dropdown_template('' . $items_indicator . '[' . $i . '][taxname][]', $estimate_item_taxes, (isset($is_proposal) ? 'proposal' : 'estimate'), $item['id'], true, $manual) . '</td>';
+//                    $table_row .= '<td class="taxrate">' . $this->misc_model->get_taxes_dropdown_template('' . $items_indicator . '[' . $i . '][taxname][]', $estimate_item_taxes, (isset($is_proposal) ? 'proposal' : 'estimate'), $item['id'], true, $manual) . '</td>';
                     $table_row .= '<td class="amount" align="right">' . $amount . '</td>';
                     $table_row .= '<td><input type="text" id="po_date" name="' . $items_indicator . '[' . $i . '][ex_mill]" value="' . $item['ex_mill'] . '" class="form-control datepicker"></td>';
                     $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][eta_date]" value="' . $item['eta_date'] . '" class="form-control datepicker"></td>';

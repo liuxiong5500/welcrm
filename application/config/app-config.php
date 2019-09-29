@@ -47,11 +47,11 @@ define('APP_ENC_KEY','506b01a9c6db27d82606d7181701c052');
 //define('APP_DB_NAME','webwebuz_welcrm');
 
 /* The hostname of your database server. */
-define('APP_DB_HOSTNAME','localhost');
+define('APP_DB_HOSTNAME','39.98.95.207');
 /* The username used to connect to the database */
-define('APP_DB_USERNAME','root');
+define('APP_DB_USERNAME','hook');
 /* The password used to connect to the database */
-define('APP_DB_PASSWORD','root');
+define('APP_DB_PASSWORD','hook');
 /* The name of the database you want to connect to */
 define('APP_DB_NAME','hook');
 
