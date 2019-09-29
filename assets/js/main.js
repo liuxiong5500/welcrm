@@ -7634,11 +7634,29 @@ function requestGetJSON(uri, params) {
 
 function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
+
     // If not custom data passed get from the preview
     data = typeof (data) == 'undefined' || data == 'undefined' ? get_item_preview_values2() : data;
     // if (data.description === "" && data.long_description === "" && data.rate === "") {
     //     return;
     // }
+    var val = '';
+    var flag = false;
+    $('.marzoni').each(function(key, value){
+        val = $(this).val();
+        if (data.marzoni == val) {
+            flag = true;
+            alert('Marzoni values must be unique');
+        }
+    })
+
+    if (data.marzoni == '') {
+        flag = true;
+    }
+
+    if (flag) {
+        return false;
+    }
     var table_row = '';
     var unit_placeholder = '';
     var item_key = $("body").find('tbody .item').length + 1;
@@ -7669,7 +7687,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '</td>';
 
-        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" class="form-control"></td>';
+        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" class="form-control marzoni"></td>';
 
         table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" value="' + data.art + '" class="form-control"></td>';
 
@@ -7764,7 +7782,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control"></td>';
 
-        // table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
+        table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
 
         table_row += '<td class="amount" align="right">' + amount + '</td>';
 

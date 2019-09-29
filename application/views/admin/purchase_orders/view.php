@@ -54,29 +54,45 @@
         <div class="panel-body">
             <table class="table dt-table" data-order-col="2" data-order-type="desc">
                 <thead>
-                <th><?php echo _l('purchase_order_item_description'); ?></th>
-                <th><?php echo _l('purchase_order_item_long_description'); ?></th>
-                <th><?php echo _l('purchase_order_item_qty'); ?></th>
-                <th><?php echo _l('purchase_order_item_rate'); ?></th>
-                <th><?php echo _l('unit'); ?></th>
-                <th><?php echo _l('total'); ?></th>
-                <th><?php echo _l('finished_qty'); ?></th>
-                <th><?php echo _l('shipped_qty'); ?></th>
-                <th><?php echo _l('logs'); ?></th>
+                <th><?php echo _l('purchase_order_marzoni'); ?></th>
+                <th><?php echo _l('purchase_order_art'); ?></th>
+                <th><?php echo _l('purchase_order_dis'); ?></th>
+                <th><?php echo _l('purchase_order_col'); ?></th>
+                <th><?php echo _l('purchase_order_composition'); ?></th>
+                <th><?php echo _l('purchase_order_weight'); ?></th>
+                <th><?php echo _l('purchase_order_width'); ?></th>
+                <th><?php echo _l('purchase_order_color'); ?></th>
+                <th><?php echo _l('purchase_order_style'); ?></th>
+                <th><?php echo _l('purchase_order_unit_price'); ?></th>
+                <th><?php echo _l('estimate_table_quantity_heading'); ?></th>
+                <th><?php echo _l('purchase_order_amount'); ?></th>
+                <th><?php echo _l('purchase_order_ex_mill'); ?></th>
+                <th><?php echo _l('purchase_order_eta_date'); ?></th>
                 </thead>
                 <tbody>
                 <?php foreach ($order->items as $key => $item) { ?>
-                    <td><?php echo $item['description']; ?></td>
-                    <td><?php echo $item['long_description']; ?></td>
-                    <td><?php echo $item['qty']; ?></td>
-                    <td><?php echo $item['rate']; ?></td>
-                    <td><?php echo $item['unit']; ?></td>
-                    <td><?php echo $item['qty'] * $item['rate']; ?></td>
-                    <td><?php echo get_purchase_order_item_finished($item['id']); ?></td>
-                    <td><?php echo get_purchase_order_item_shipped($item['id']); ?></td>
-                    <td>
-                        <a href="<?php echo admin_url('purchase_orders/item_logs/' . $item['id']); ?>"><?php echo _l('view'); ?></a>
-                    </td>
+                    <tr>
+                        <td><?php echo $item['marzoni']; ?></td>
+                        <td><?php echo $item['art']; ?></td>
+                        <td><?php echo $item['dis']; ?></td>
+                        <td><?php echo $item['col']; ?></td>
+                        <td><?php echo $item['description']; ?></td>
+                        <td><?php echo $item['weight']; ?></td>
+                        <td><?php echo $item['width']; ?></td>
+                        <td><?php echo $item['color']; ?></td>
+                        <td><?php echo $item['style']; ?></td>
+                        <td><?php echo $item['unit_price']; ?></td>
+                        <td><?php echo $item['qty']; ?></td>
+                        <td><?php echo $item['qty'] * $item['unit_price']; ?></td>
+                        <td><?php echo $item['ex_mill']; ?></td>
+                        <td><?php echo $item['eta_date']; ?></td>
+                        <!--                    <td>--><?php //echo get_purchase_order_item_finished($item['id']); ?><!--</td>-->
+                        <!--                    <td>--><?php //echo get_purchase_order_item_shipped($item['id']); ?><!--</td>-->
+                        <!--                    <td>-->
+                        <!--                        <a href="--><?php //echo admin_url('purchase_orders/item_logs/' . $item['id']); ?><!--">--><?php //echo _l('view'); ?><!--</a>-->
+                        <!--                    </td>-->
+                    </tr>
+
                 <?php } ?>
                 </tbody>
             </table>

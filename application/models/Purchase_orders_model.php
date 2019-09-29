@@ -132,6 +132,7 @@ class Purchase_orders_model extends CRM_Model
 
     public function update($data, $id)
     {
+        print_r($data);die;
         $affectedRows = 0;
 
         $items = [];
