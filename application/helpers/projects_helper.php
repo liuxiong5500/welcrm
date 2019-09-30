@@ -235,6 +235,16 @@ function get_shipment_term_name_by_id($id)
     return $shipment_term->name;
 }
 
+function get_supplier_name_by_id($id)
+{
+    $CI = &get_instance();
+    if (!class_exists('suppliers_model')) {
+        $CI->load->model('suppliers_model');
+    }
+    $supplier = $CI->suppliers_model->get($id);
+    return $supplier->company;
+}
+
 function get_purchase_order_item_finished($id)
 {
     $CI = &get_instance();

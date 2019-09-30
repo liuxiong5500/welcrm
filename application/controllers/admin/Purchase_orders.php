@@ -16,6 +16,7 @@ class Purchase_orders extends Admin_controller
 
     public function order($id = '')
     {
+
         if ($this->input->post()) {
             $purchase_order_data = $this->input->post();
             if ($id == '') {

@@ -27,50 +27,50 @@
                                 <?php
                                 echo render_select('supplier', $suppliers, array('id', 'company'), 'purchase_order_supplier', $selected, do_action('purchase_order_supplier_disabled', $s_attrs));
                                 ?>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="f_client_id">
-                                            <div class="form-group select-placeholder">
-                                                <label for="clientid"
-                                                       class="control-label"><?php echo _l('invoice_select_customer'); ?></label>
-                                                <select id="clientid" name="clientid" data-live-search="true"
-                                                        data-width="100%"
-                                                        class="ajax-search<?php if (isset($estimate) && empty($estimate->clientid)) {
-                                                            echo ' customer-removed';
-                                                        } ?>"
-                                                        data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
-                                                    <?php $selected = (isset($estimate) ? $estimate->clientid : '');
-                                                    if ($selected == '') {
-                                                        $selected = (isset($customer_id) ? $customer_id : '');
-                                                    }
-                                                    if ($selected != '') {
-                                                        $rel_data = get_relation_data('customer', $selected);
-                                                        $rel_val = get_relation_values($rel_data, 'customer');
-                                                        echo '<option value="' . $rel_val['id'] . '" selected>' . $rel_val['name'] . '</option>';
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group select-placeholder warehouses-wrapper">
-                                            <label for="warehouse"><?php echo _l('purchase_order_warehouse'); ?></label>
-                                            <div id="warehouse_ajax_search_wrapper">
-                                                <select name="warehouse" id="warehouse" class="warehouses ajax-search"
-                                                        data-live-search="true" data-width="100%"
-                                                        data-none-selected-text="<?php echo _l('dropdown_non_selected_tex'); ?>">
-                                                    <?php
-                                                    if (isset($estimate) && $estimate->warehouse != 0) {
-                                                        echo '<option value="' . $estimate->warehouse . '" selected>' . get_warehouse_name_by_id($estimate->warehouse) . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php $value = (isset($estimate) ? $estimate->pe_number : ''); ?>
-                                <?php echo render_input('pe_number', 'purchase_order_proposal_estimate_number', $value, 'text'); ?>
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-6">-->
+<!--                                        <div class="f_client_id">-->
+<!--                                            <div class="form-group select-placeholder">-->
+<!--                                                <label for="clientid"-->
+<!--                                                       class="control-label">--><?php //echo _l('invoice_select_customer'); ?><!--</label>-->
+<!--                                                <select id="clientid" name="clientid" data-live-search="true"-->
+<!--                                                        data-width="100%"-->
+<!--                                                        class="ajax-search--><?php //if (isset($estimate) && empty($estimate->clientid)) {
+//                                                            echo ' customer-removed';
+//                                                        } ?><!--"-->
+<!--                                                        data-none-selected-text="--><?php //echo _l('dropdown_non_selected_tex'); ?><!--">-->
+<!--                                                    --><?php //$selected = (isset($estimate) ? $estimate->clientid : '');
+//                                                    if ($selected == '') {
+//                                                        $selected = (isset($customer_id) ? $customer_id : '');
+//                                                    }
+//                                                    if ($selected != '') {
+//                                                        $rel_data = get_relation_data('customer', $selected);
+//                                                        $rel_val = get_relation_values($rel_data, 'customer');
+//                                                        echo '<option value="' . $rel_val['id'] . '" selected>' . $rel_val['name'] . '</option>';
+//                                                    } ?>
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6">-->
+<!--                                        <div class="form-group select-placeholder warehouses-wrapper">-->
+<!--                                            <label for="warehouse">--><?php //echo _l('purchase_order_warehouse'); ?><!--</label>-->
+<!--                                            <div id="warehouse_ajax_search_wrapper">-->
+<!--                                                <select name="warehouse" id="warehouse" class="warehouses ajax-search"-->
+<!--                                                        data-live-search="true" data-width="100%"-->
+<!--                                                        data-none-selected-text="--><?php //echo _l('dropdown_non_selected_tex'); ?><!--">-->
+<!--                                                    --><?php
+//                                                    if (isset($estimate) && $estimate->warehouse != 0) {
+//                                                        echo '<option value="' . $estimate->warehouse . '" selected>' . get_warehouse_name_by_id($estimate->warehouse) . '</option>';
+//                                                    }
+//                                                    ?>
+<!--                                                </select>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                --><?php //$value = (isset($estimate) ? $estimate->pe_number : ''); ?>
+<!--                                --><?php //echo render_input('pe_number', 'purchase_order_proposal_estimate_number', $value, 'text'); ?>
                                 <?php $value = (isset($estimate) ? _d(date('Y-m-d', strtotime($estimate->po_date))) : _d(date('Y-m-d'))); ?>
                                 <?php echo render_date_input('po_date', 'purchase_order_date', $value); ?>
                             </div>
@@ -95,25 +95,25 @@
                                 <?php
                                 echo render_select('currency', $currencies, array('id', 'name', 'symbol'), 'purchase_order_currency', $selected, do_action('purchase_order_currency_disabled', $s_attrs));
                                 ?>
-                                <?php $value = (isset($estimate) ? $estimate->currency_rate : $rate); ?>
-                                <?php echo render_input('currency_rate', 'purchase_order_currency_rate', $value); ?>
-                                <?php
-                                $selected = '';
-                                $s_attrs = array('data-show-subtext' => true);
-                                foreach ($statuses as $status) {
-                                    if (isset($estimate)) {
-                                        if ($status['id'] == $estimate->status) {
-                                            $selected = $status['id'];
-                                            $s_attrs['disabled'] = true;
-                                        }
-                                    } else {
-                                        $selected = 1;
-                                    }
-                                }
-                                ?>
-                                <?php
-                                echo render_select('status', $statuses, array('id', 'name'), 'purchase_order_status', $selected, do_action('purchase_order_status_disabled', $s_attrs));
-                                ?>
+<!--                                --><?php //$value = (isset($estimate) ? $estimate->currency_rate : $rate); ?>
+<!--                                --><?php //echo render_input('currency_rate', 'purchase_order_currency_rate', $value); ?>
+<!--                                --><?php
+//                                $selected = '';
+//                                $s_attrs = array('data-show-subtext' => true);
+//                                foreach ($statuses as $status) {
+//                                    if (isset($estimate)) {
+//                                        if ($status['id'] == $estimate->status) {
+//                                            $selected = $status['id'];
+//                                            $s_attrs['disabled'] = true;
+//                                        }
+//                                    } else {
+//                                        $selected = 1;
+//                                    }
+//                                }
+//                                ?>
+<!--                                --><?php
+//                                echo render_select('status', $statuses, array('id', 'name'), 'purchase_order_status', $selected, do_action('purchase_order_status_disabled', $s_attrs));
+//                                ?>
                                 <?php
                                 $selected = '';
                                 $s_attrs = array('data-show-subtext' => true);

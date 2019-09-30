@@ -7649,14 +7649,15 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
             alert('Marzoni values must be unique');
         }
     })
-
-    if (data.marzoni == '') {
-        flag = true;
-    }
-
     if (flag) {
-        return false;
+        return;
     }
+
+    if (!checkEmpty(data)) {
+        return;
+    }
+
+
     var table_row = '';
     var unit_placeholder = '';
     var item_key = $("body").find('tbody .item').length + 1;
@@ -7905,3 +7906,61 @@ function clear_item_preview_values2(default_taxes) {
     $('input[name="expense_id"]').val('');
 }
 
+function checkEmpty(data)
+{
+
+
+    if (data.art == '') {
+        return false;
+    }
+
+    if (data.col == '') {
+        return false;
+    }
+
+    if (data.color == '') {
+        return false;
+    }
+
+    if (data.description == '') {
+        return false;
+    }
+
+    if (data.dis == '') {
+        return false;
+    }
+
+    if (data.eta_date == '') {
+        return false;
+    }
+
+    if (data.ex_mill == '') {
+        return false;
+    }
+
+    if (data.marzoni == '') {
+        return false;
+    }
+
+    if (data.qty == '') {
+        return false;
+    }
+
+    if (data.style == '') {
+        return false;
+    }
+
+    if (data.unit_price == '') {
+        return false;
+    }
+
+    if (data.weight == '') {
+        return false;
+    }
+
+    if (data.width == '') {
+        return false;
+    }
+
+    return true;
+}

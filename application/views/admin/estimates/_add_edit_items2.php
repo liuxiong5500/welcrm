@@ -140,7 +140,7 @@
                     ?>
                 </td>
                 <td>
-                    <input type="number" name="amount" class="form-control"
+                    <input type="number" name="amount" class="form-control" disabled="disabled"
                            placeholder="<?php echo _l('purchase_order_amount'); ?>">
                 </td>
 

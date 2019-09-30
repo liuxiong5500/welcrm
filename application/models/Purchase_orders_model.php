@@ -103,6 +103,62 @@ class Purchase_orders_model extends CRM_Model
             unset($data['newitems']);
         }
 
+        if (isset($data['marzoni'])) {
+            unset($data['marzoni']);
+        }
+
+        if (isset($data['art'])) {
+            unset($data['art']);
+        }
+
+        if (isset($data['dis'])) {
+            unset($data['dis']);
+        }
+
+        if (isset($data['col'])) {
+            unset($data['col']);
+        }
+
+        if (isset($data['description'])) {
+            unset($data['description']);
+        }
+
+        if (isset($data['weight'])) {
+            unset($data['weight']);
+        }
+
+        if (isset($data['width'])) {
+            unset($data['width']);
+        }
+
+        if (isset($data['color'])) {
+            unset($data['color']);
+        }
+
+        if (isset($data['style'])) {
+            unset($data['style']);
+        }
+
+        if (isset($data['unit_price'])) {
+            unset($data['unit_price']);
+        }
+
+        if (isset($data['qty'])) {
+            unset($data['qty']);
+        }
+
+        if (isset($data['amount'])) {
+            unset($data['amount']);
+        }
+
+        if (isset($data['ex_mill'])) {
+            unset($data['ex_mill']);
+        }
+
+        if (isset($data['eta_date'])) {
+            unset($data['eta_date']);
+        }
+
         $hook_data = do_action('before_purchase_order_added', [
             'data' => $data,
             'items' => $items,
