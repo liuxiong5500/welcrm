@@ -70,8 +70,9 @@
                 <th><?php echo _l('purchase_order_color'); ?></th>
                 <th><?php echo _l('purchase_order_style'); ?></th>
                 <th><?php echo _l('purchase_order_unit_price'); ?></th>
-                <th><?php echo _l('estimate_table_quantity_heading'); ?></th>
                 <th><?php echo _l('purchase_order_amount'); ?></th>
+                <th><?php echo _l('estimate_table_quantity_heading'); ?></th>
+                <th><?php echo _l('purchase_order_not_shipped'); ?></th>
                 <th><?php echo _l('purchase_order_ex_mill'); ?></th>
                 <th><?php echo _l('purchase_order_eta_date'); ?></th>
                 </thead>
@@ -88,10 +89,43 @@
                         <td><?php echo $item['color']; ?></td>
                         <td><?php echo $item['style']; ?></td>
                         <td><?php echo $item['unit_price']; ?></td>
-                        <td><?php echo $item['qty']; ?></td>
-                        <td><?php echo $item['qty'] * $item['unit_price']; ?></td>
-                        <td><?php echo $item['ex_mill']; ?></td>
-                        <td><?php echo $item['eta_date']; ?></td>
+                        <td>
+                            <?php echo $item['qty'] * $item['unit_price']; ?>
+                            <?php if (isset($item['children'])) { ?>
+                            <div>&nbsp;</div>
+                            <?php foreach ($item['children'] as $v) {?>
+                            <div><?php echo $v['marzoni']?></div>
+                            <?php }?>
+                            <?php }?>
+                        </td>
+                        <td>
+                            <?php echo $item['qty']; ?>
+                            <?php if (isset($item['children'])) { ?>
+                            <div>&nbsp;</div>
+                            <?php foreach ($item['children'] as $v) {?>
+                            <div><?php echo $v['qty']?></div>
+                            <?php }?>
+                            <?php }?>
+                        </td>
+                        <td><?php echo $item['not_shipped']; ?></td>
+                        <td>
+                            <?php echo $item['ex_mill']; ?>
+                            <?php if (isset($item['children'])) { ?>
+                            <div>&nbsp;</div>
+                            <?php foreach ($item['children'] as $v) {?>
+                            <div><?php echo $v['ex_mill']?></div>
+                            <?php }?>
+                            <?php }?>
+                        </td>
+                        <td>
+                            <?php echo $item['eta_date']; ?>
+                            <?php if (isset($item['children'])) { ?>
+                            <div>&nbsp;</div>
+                            <?php foreach ($item['children'] as $v) {?>
+                            <div><?php echo $v['eta_date']?></div>
+                            <?php }?>
+                            <?php }?>
+                        </td>
 <!--                                            <td>--><?php //echo get_purchase_order_item_finished($item['id']); ?><!--</td>-->
 <!--                                            <td>--><?php //echo get_purchase_order_item_shipped($item['id']); ?><!--</td>-->
 <!--                                            <td>-->

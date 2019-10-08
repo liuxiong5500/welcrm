@@ -66,9 +66,10 @@
                     $qty_heading = _l('estimate_table_quantity_heading') . '/' . _l('estimate_table_hours_heading');
                 }
                 ?>
-                <th width="2%" class="qty" align="center"><?php echo $qty_heading; ?></th>
-<!--                <th width="6%" align="center">--><?php //echo _l('estimate_table_tax_heading'); ?><!--</th>-->
                 <th width="2%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
+                <th width="2%" class="qty" align="center"><?php echo $qty_heading; ?></th>
+                <th width="2%" align="center"><?php echo _l('purchase_order_not_shipped'); ?></th>
+<!--                <th width="6%" align="center">--><?php //echo _l('estimate_table_tax_heading'); ?><!--</th>-->
                 <th width="12%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
                 <th width="12%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
                 <th align="center"><i class="fa fa-cog"></i></th>
@@ -119,6 +120,10 @@
                 </td>
                 <?php echo render_custom_fields_items_table_add_edit_preview(); ?>
                 <td>
+                    <input type="number" name="amount" class="form-control" disabled="disabled"
+                           placeholder="<?php echo _l('purchase_order_amount'); ?>">
+                </td>
+                <td>
                     <input type="number" name="qty" class="form-control"
                            placeholder="<?php echo _l('purchase_order_qty'); ?>">
                 </td>
@@ -140,17 +145,17 @@
                     ?>
                 </td>
                 <td>
-                    <input type="number" name="amount" class="form-control" disabled="disabled"
-                           placeholder="<?php echo _l('purchase_order_amount'); ?>">
+                    <input type="number" name="not_shipped" class="form-control" disabled="disabled"
+                           placeholder="<?php echo _l('purchase_order_not_shipped'); ?>">
                 </td>
 
                 <td>
                     <input type="text" id="po_date" placeholder="<?php echo _l('purchase_order_ex_mill'); ?>" name="ex_mill"
-                           class="form-control datepicker">
+                           class="form-control datepicker" readonly="readonly">
                 </td>
                 <td>
                     <input type="text" placeholder="<?php echo _l('purchase_order_eta_date'); ?>" name="eta_date"
-                           class="form-control datepicker">
+                           class="form-control datepicker" readonly="readonly">
                 </td>
                 <td>
                     <?php
@@ -170,8 +175,7 @@
                 if (isset($estimate)) {
                     $add_items = $estimate->items;
                     $items_indicator = 'items';
-                }
-
+                } 
                 foreach ($add_items as $item) {
                     $manual = false;
                     $table_row = '<tr class="sortable item">';
@@ -195,37 +199,98 @@
                     $table_row .= form_hidden('isedit');
                     // order input
                     $table_row .= '<input type="hidden" class="order" name="' . $items_indicator . '[' . $i . '][order]">';
+                    $table_row .= '<input type="hidden" class="not_shipped" value="' . $item['not_shipped']  . '">';
                     $table_row .= '</td>';
 
-                    $table_row .= '<td class="bold"><input type="number" name="' . $items_indicator . '[' . $i . '][marzoni]" min="0" value="' . $item['marzoni'] . '" class="form-control marzoni"></td>';
+                    $table_row .= '<td class="bold"><input readonly="readonly" type="number" name="' . $items_indicator . '[' . $i . '][marzoni]" min="0" value="' . $item['marzoni'] . '" class="form-control marzoni">';
 
-                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][art]" value="' . $item['art'] . '" class="form-control"></td>';
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<input type="hidden" name="itemschildren['. $item['id'] .']['.$k.'][item_id]" value="'.$v['item_id'].'"  class="form-control children'.$v['item_id'].$k.'">';
+                            $table_row .= '<input type="hidden" name="itemschildren['. $item['id'] .']['.$k.'][id]" value="'.$v['id'].'"  class="form-control children'.$v['item_id'].$k.'">';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
 
-                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][dis]" min="0"  value="' . $item['dis'] . '" class="form-control"></td>';
+                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][art]" value="' . $item['art'] . '" class="form-control" readonly="readonly"></td>';
 
-                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][col]" min="0"  value="' . $item['col'] . '" class="form-control"></td>';
+                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][dis]" min="0"  value="' . $item['dis'] . '" class="form-control" readonly="readonly"></td>';
 
-                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][description]" class="form-control" rows="5">' . clear_textarea_breaks($item['description']) . '</textarea></td>';
+                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][col]" min="0"  value="' . $item['col'] . '" class="form-control" readonly="readonly"></td>';
 
-                    $table_row .= '<td><input type="number" name="' . $items_indicator . '[' . $i . '][weight]" min="0"  value="' . $item['weight'] . '" class="form-control"></td>';
+                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][description]" class="form-control" rows="5" readonly="readonly">' . clear_textarea_breaks($item['description']) . '</textarea></td>';
 
-                    $table_row .= '<td><input type="number" name="' . $items_indicator . '[' . $i . '][width]" min="0"  value="' . $item['width'] . '" class="form-control"></td>';
+                    $table_row .= '<td><input type="number" name="' . $items_indicator . '[' . $i . '][weight]" min="0"  value="' . $item['weight'] . '" class="form-control" readonly="readonly"></td>';
 
-                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][color]" class="form-control" rows="5">' . clear_textarea_breaks($item['color']) . '</textarea></td>';
+                    $table_row .= '<td><input type="number" name="' . $items_indicator . '[' . $i . '][width]" min="0"  value="' . $item['width'] . '" class="form-control" readonly="readonly"></td>';
 
-                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][style]" class="form-control" rows="5">' . clear_textarea_breaks($item['style']) . '</textarea></td>';
+                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][color]" class="form-control" rows="5" readonly="readonly" >' . clear_textarea_breaks($item['color']) . '</textarea></td>';
+
+                    $table_row .= '<td><textarea name="' . $items_indicator . '[' . $i . '][style]" class="form-control" rows="5" readonly="readonly">' . clear_textarea_breaks($item['style']) . '</textarea></td>';
 
                     $table_row .= render_custom_fields_items_table_in($item, $items_indicator . '[' . $i . ']');
 
-                    $table_row .= '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="' . $items_indicator . '[' . $i . '][unit_price]" value="' . $item['unit_price'] . '" class="form-control">';
+                    $table_row .= '<td><input type="number" min="0" onblur="calculate_total();" readonly="readonly" onchange="calculate_total();" data-quantity name="' . $items_indicator . '[' . $i . '][unit_price]" value="' . $item['unit_price'] . '" class="form-control">';
+                    
+                    $table_row .= '<td class="amount" align="right"><input type="text" class="amount_total form-control" value=" '.$amount.' "  readonly="readonly">';
 
-                    $table_row .= '<td class="rate"><input type="number" data-toggle="tooltip" title="' . _l('numbers_not_formatted_while_editing') . '" onblur="calculate_total();" onchange="calculate_total();" name="' . $items_indicator . '[' . $i . '][qty]" value="' . $item['qty'] . '" class="form-control"></td>';
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<input style="margin:5px 0px 0px 0px;" type="text" name="itemschildren['. $item['id'] .']['.$k.'][marzine]" value="'.$v['marzoni'].'"  class="form-control children_marzine children'.$v['item_id'].$k.' children_mar_each'.$v['item_id'].'" style="">';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
+                    
+                    $table_row .= '<td class="rate"><input type="number" readonly="readonly" class="qty form-control" data-toggle="tooltip" title="' . _l('numbers_not_formatted_while_editing') . '" onblur="calculate_total();" onchange="calculate_total();" name="' . $items_indicator . '[' . $i . '][qty]" value="' . $item['qty'] . '" >';
+
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<input style="margin:5px 0px 0px 0px;" type="number" min="0" onchange="check_not_shipped(this,'.$v['item_id'].');" data-quantity name="itemschildren['. $item['id'] .']['.$k.'][qty]" value="'.$v['qty'].'" class="form-control children_qty'.$v['item_id'].' children'.$v['item_id'].$k.'">';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
+                    
                     $table_row .= '<td class="taxrate" style="display:none;">' . $this->misc_model->get_taxes_dropdown_template('' . $items_indicator . '[' . $i . '][taxname][]', $estimate_item_taxes, (isset($is_proposal) ? 'proposal' : 'estimate'), $item['id'], true, $manual) . '</td>';
-                    $table_row .= '<td class="amount" align="right">' . $amount . '</td>';
-                    $table_row .= '<td><input type="text" id="po_date" name="' . $items_indicator . '[' . $i . '][ex_mill]" value="' . $item['ex_mill'] . '" class="form-control datepicker"></td>';
-                    $table_row .= '<td><input type="text" name="' . $items_indicator . '[' . $i . '][eta_date]" value="' . $item['eta_date'] . '" class="form-control datepicker"></td>';
+                    
+                    $table_row .= '<td class="shipped" align="right"><input class="shipped form-control" name="' . $items_indicator . '[' . $i . '][not_shipped]" value="' . $item['not_shipped'] . '" readonly="readonly"></td>';
+                    
+                    $table_row .= '<td class="ex_mill"><input type="text" id="po_date" name="' . $items_indicator . '[' . $i . '][ex_mill]" value="' . $item['ex_mill'] . '" class="form-control ex_mill" readonly="readonly">';
+                    
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<input style="margin:5px 0px 0px 0px;" onchange="check_max_ex_mill(this,'.$v['item_id'].');" type="text" id="po_date" name="itemschildren['. $item['id'] .']['.$k.'][ex_mill]" class="form-control datepicker ex_mill_children children'. $v['item_id'].$k .' children_ex_mill'.$v['item_id'].'" value="'.$v['ex_mill'].'">';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
+
+                    $table_row .= '<td class="eta_date"><input type="text" name="' . $items_indicator . '[' . $i . '][eta_date]" value="' . $item['eta_date'] . '" class="form-control eta_date" readonly="readonly">';
+                    
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<input style="margin:5px 0px 0px 0px;" type="text" onchange="check_max_eta_date(this,'.$v['item_id'].');" name="itemschildren['. $item['id'] .']['.$k.'][eta_date]" class="form-control datepicker eta_date_children children'. $v['item_id'].$k .' children_eta_date'.$v['item_id'].'"  value="'.$v['eta_date'].'">';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
+
+                    $table_row .= '<td class="children_del"><a href="#" class="btn pull-right btn-info"  onclick="add_item(this,' . $item['id'] . '); return false;"><i class="fa fa-plus"></i></a>';
+
+                    if (!empty($item['children'])) {
+                        foreach ($item['children'] as $k => $v) {
+                            $table_row .= '<a style="margin:8px 0px 0px 0px;" href="#" class="btn btn-danger pull-left" onclick="delete_children(this, '. $k .','.$v['item_id'].', '.$v['id'].'); return false;"><i class="fa fa-times"></i></a>';
+                        }
+                        
+                    }
+                    $table_row .= '</td>';
+
                     $table_row .= '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' . $item['id'] . '); return false;"><i class="fa fa-times"></i></a></td>';
+
                     $table_row .= '</tr>';
+
                     echo $table_row;
                     $i++;
                 }

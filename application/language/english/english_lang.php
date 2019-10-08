@@ -4142,5 +4142,6 @@ $lang['purchase_order_style'] = 'Style';
 $lang['purchase_order_unit_price'] = 'Unit Price';
 $lang['purchase_order_amount'] = 'Amount';
 $lang['purchase_order_qty'] = 'Qty';
+$lang['purchase_order_not_shipped'] = 'Not shipped';
 $lang['purchase_order_ex_mill'] = 'Ex Mill';
 $lang['purchase_order_eta_date'] = 'ETA Date';

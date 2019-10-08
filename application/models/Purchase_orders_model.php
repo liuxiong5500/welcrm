@@ -80,6 +80,9 @@ class Purchase_orders_model extends CRM_Model
             $purchase_order = $this->db->get()->row();
             if ($purchase_order) {
                 $purchase_order->items = get_items_by_type('purchase_order', $id);
+                foreach ($purchase_order->items as &$v) {
+                    $v['children'] = get_items_children_by_item($v['id']);
+                }
                 $purchase_order->client = $this->clients_model->get($purchase_order->clientid);
             }
 
@@ -101,6 +104,12 @@ class Purchase_orders_model extends CRM_Model
         if (isset($data['newitems'])) {
             $items = $data['newitems'];
             unset($data['newitems']);
+        }
+
+        $newChildrenItem = [];
+        if (isset($data['newItemschildren'])) {
+            $newChildrenItem = $data['newItemschildren'];
+            unset($data['newItemschildren']);
         }
 
         if (isset($data['marzoni'])) {
@@ -178,7 +187,12 @@ class Purchase_orders_model extends CRM_Model
                 if ($itemid = add_new_sales_item_post($item, $insert_id, 'purchase_order')) {
                     _maybe_insert_post_item_tax($itemid, $item, $insert_id, 'purchase_order');
                 }
+                $newChildren = $newChildrenItem[$key];
+                foreach ($newChildren as $val) {
+                    $new_item_added = add_new_children_item_post($val, $itemid);
+                }
             }
+            
             do_action('after_purchase_order_added', $insert_id);
 
             return $insert_id;
@@ -200,6 +214,17 @@ class Purchase_orders_model extends CRM_Model
         if (isset($data['newitems'])) {
             $newitems = $data['newitems'];
             unset($data['newitems']);
+        }
+        $childrenItem = [];
+        if (isset($data['itemschildren'])) {
+            $childrenItem = $data['itemschildren'];
+            unset($data['itemschildren']);
+        }
+
+        $newChildrenItem = [];
+        if (isset($data['newItemschildren'])) {
+            $newChildrenItem = $data['newItemschildren'];
+            unset($data['newItemschildren']);
         }
 
         if (isset($data['custom_fields'])) {
@@ -279,15 +304,25 @@ class Purchase_orders_model extends CRM_Model
         $data['removed_items'] = $hook_data['removed_items'];
         $items = $hook_data['items'];
         $newitems = $hook_data['newitems'];
-
+        
         foreach ($data['removed_items'] as $remove_item_id) {
             $purchase_order_item = $this->get_purchase_order_item($remove_item_id);
             if (handle_removed_sales_item_post($remove_item_id, 'purchase_order')) {
                 $affectedRows++;
             }
         }
-
+        
         unset($data['removed_items']);
+        if (isset($data['removed_items_chilrden'])) {
+            foreach ($data['removed_items_chilrden'] as $remove_children_item_id) {
+                if (handle_removed_children_item_post($remove_children_item_id)) {
+                    $affectedRows++;
+                }
+            }
+            
+            unset($data['removed_items_chilrden']);
+        }
+        
 
         $this->db->where('id', $id);
         $this->db->update('tblpurchaseorders', $data);
@@ -352,6 +387,10 @@ class Purchase_orders_model extends CRM_Model
                 $affectedRows++;
             }
 
+            if (update_sales_item_post($item['itemid'], $item, 'not_shipped')) {
+                $affectedRows++;
+            }
+
             if (isset($item['custom_fields'])) {
                 if (handle_custom_fields_post($item['itemid'], $item['custom_fields'])) {
                     $affectedRows++;
@@ -386,9 +425,35 @@ class Purchase_orders_model extends CRM_Model
             }
         }
 
+        $newChildrenItems = [];
+        foreach ($childrenItem as $v) {
+            foreach ($v as $val) {
+                $newChildrenItems[] = $val;
+            }
+        }
+   
+        foreach ($newChildrenItems as $k => $v) {
+            if (update_children_item_post($v['id'], $v)) {
+                $affectedRows++;
+            }
+        }
+        
         foreach ($newitems as $key => $item) {
             if ($new_item_added = add_new_sales_item_post($item, $id, 'purchase_order')) {
                 _maybe_insert_post_item_tax($new_item_added, $item, $id, 'purchase_order');
+                $affectedRows++;
+            }
+        }
+        
+        $newChildren = [];
+        foreach ($newChildrenItem as $v) {
+            foreach ($v as $val) {
+                $newChildren[] = $val;
+            }
+        }
+        
+        foreach ($newChildren as $key => $item) {
+            if ($new_item_added = add_new_children_item_post($item)) {
                 $affectedRows++;
             }
         }

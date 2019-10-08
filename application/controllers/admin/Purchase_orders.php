@@ -25,6 +25,7 @@ class Purchase_orders extends Admin_controller
                     set_alert('success', _l('added_successfully', _l('purchase_order')));
                 }
             } else {
+
                 $success = $this->purchase_orders_model->update($purchase_order_data, $id);
                 if ($success) {
                     set_alert('success', _l('updated_successfully', _l('purchase_order')));
@@ -45,6 +46,7 @@ class Purchase_orders extends Admin_controller
             $data['edit'] = true;
             $title = _l('edit', _l('purchase_order_lowercase'));
         }
+        
         $this->load->model('taxes_model');
         $data['taxes'] = $this->taxes_model->get();
         $this->load->model('invoice_items_model');

@@ -512,6 +512,16 @@ function get_items_by_type($type, $id)
 
     return $CI->db->get()->result_array();
 }
+
+function get_items_children_by_item($item_id)
+{
+    $CI = &get_instance();
+    $CI->db->select();
+    $CI->db->from('tblitems_in_children');
+    $CI->db->where('item_id', $item_id);
+    return $CI->db->get()->result_array();
+}
+
 /**
 * Function that update total tax in sales table eq. invoice, proposal, estimates, credit note
 * @param  mixed $id
@@ -649,6 +659,7 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
         'description'      => $item['description'],
         'rel_id'           => $rel_id,
         'rel_type'         => $rel_type,
+        'not_shipped' =>  $item['not_shipped'],
         'item_order'       => $item['order'],
         'ex_mill'       => $item['ex_mill'],
         'eta_date'       => $item['eta_date'],
@@ -659,6 +670,29 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
     if ($custom_fields !== false) {
         handle_custom_fields_post($id, $custom_fields);
     }
+
+    return $id;
+}
+
+function add_new_children_item_post($item, $itemId = 0)
+{
+    
+    $CI = &get_instance();
+
+    if (!isset($item['item_id'])) {
+        $item_id = $itemId;
+    } else {
+        $item_id = $item['item_id'];
+    }
+    $CI->db->insert('tblitems_in_children', [
+        'marzoni' => $item['marzine'],
+        'item_id' => $item_id,
+        'qty' => $item['qty'],
+        'ex_mill'       => $item['ex_mill'],
+        'eta_date'       => $item['eta_date'],
+    ]);
+
+    $id = $CI->db->insert_id();
 
     return $id;
 }
@@ -714,6 +748,23 @@ function update_sales_item_post($item_id, $data, $field = '')
     return $CI->db->affected_rows() > 0 ? true : false;
 }
 
+function update_children_item_post($item_id, $data)
+{
+    $update = [
+        'marzoni' => $data['marzine'],
+        'item_id' => $data['item_id'],
+        'qty' => $data['qty'],
+        'ex_mill'       => $data['ex_mill'],
+        'eta_date'       => $data['eta_date'],
+    ];
+
+    $CI = &get_instance();
+    $CI->db->where('id', $item_id);
+    $CI->db->update('tblitems_in_children', $update);
+
+    return $CI->db->affected_rows() > 0 ? true : false;
+}
+
 /**
  * When item is removed eq from invoice will be stored in removed_items in $_POST
  * With foreach loop this function will remove the item from database and it's taxes
@@ -734,6 +785,20 @@ function handle_removed_sales_item_post($id, $rel_type)
         $CI->db->where('fieldto', 'items');
         $CI->db->delete('tblcustomfieldsvalues');
 
+        return true;
+    }
+
+    return false;
+}
+
+function handle_removed_children_item_post($id)
+{
+    $CI = &get_instance();
+
+    $CI->db->where('id', $id);
+    $CI->db->delete('tblitems_in_children');
+    if ($CI->db->affected_rows() > 0) {
+    
         return true;
     }
 

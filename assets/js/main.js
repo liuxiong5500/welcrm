@@ -6622,7 +6622,8 @@ function calculate_total() {
         _amount = accounting.toFixed($(this).find('td.rate input').val() * quantity, app_decimal_places);
         _amount = parseFloat(_amount);
 
-        $(this).find('td.amount').html(accounting.formatNumber(_amount));
+        $(this).find('td.amount').find('.amount_total').val(accounting.formatNumber(_amount));
+        $(this).find('td.amount').siblings('.dragger').find('.not_shipped').val($(this).find('td.rate input').val());
         subtotal += _amount;
         row = $(this);
         item_taxes = $(this).find('select.tax').selectpicker('val');
@@ -7686,6 +7687,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         // order input
         table_row += '<input type="hidden" class="order" name="newitems[' + item_key + '][order]">';
+        table_row += '<input type="hidden" class="not_shipped" value="">';
 
         table_row += '</td>';
 
@@ -7782,17 +7784,21 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="newitems[' + item_key + '][unit_price]" value="' + data.unit_price + '" class="form-control"></td>';
 
-        table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control"></td>';
+        table_row += '<td class="amount" align="right"><input type="text" class="amount_total form-control" value="' + amount + '"  readonly="readonly"></td>';
+
+        table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control qty"></td>';
 
         // table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
 
-        table_row += '<td class="amount" align="right">' + amount + '</td>';
+        table_row += '<td class="shipped" align="right"><input class="shipped form-control" name="newitems[' + item_key + '][not_shipped]" value="' + data.qty + '" readonly="readonly"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][ex_mill]" value="' + data.ex_mill + '" class="form-control datepicker"></td>';
+        table_row += '<td class="ex_mill"><input type="text" id="po_date" name="newitems[' + item_key + '][ex_mill]" readonly="readonly" value="' + data.ex_mill + '" class="form-control ex_mill"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][eta_date]" value="' + data.eta_date + '" class="form-control datepicker"></td>';
+        table_row += '<td class="eta_date"><input type="text" name="newitems[' + item_key + '][eta_date]" readonly="readonly" value="' + data.eta_date + '" class="form-control eta_date"></td>';
 
-        table_row += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' + itemid + '); return false;"><i class="fa fa-trash"></i></a></td>';
+        table_row += '<td><a href="#" class="btn pull-right btn-info"  onclick="add_item(this,' + item_key + ',1); return false;"><i class="fa fa-plus"></i></a></td>';
+
+        table_row += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_item(this,' + item_key + '); return false;"><i class="fa fa-trash"></i></a></td>';
 
         table_row += '</tr>';
 
@@ -7930,13 +7936,13 @@ function checkEmpty(data)
         return false;
     }
 
-    if (data.eta_date == '') {
-        return false;
-    }
+    // if (data.eta_date == '') {
+    //     return false;
+    // }
 
-    if (data.ex_mill == '') {
-        return false;
-    }
+    // if (data.ex_mill == '') {
+    //     return false;
+    // }
 
     if (data.marzoni == '') {
         return false;
@@ -7963,4 +7969,162 @@ function checkEmpty(data)
     }
 
     return true;
+}
+
+function add_item(that, item_id, type = null)
+{
+    var mar_each = [];
+    var qty_val = false;
+    var ex_mill_val = false;
+    var eta_date_val = false;
+    var mar_each_val = false;
+
+    var marzoni = $(that).parent('td').siblings('.bold').find('.marzoni').val();
+
+    $('.children_mar_each'+item_id).each(function(key, value){
+        if (!empty(mar_each) && $.inArray($(this).val(), mar_each) != -1) {
+            mar_each_val = true;
+        } else {
+            mar_each.push($(this).val());
+        }
+    })
+
+    if (mar_each_val) {
+        alert('mar_each is unique');return false;
+    }
+
+    $('.children_qty'+item_id).each(function(key, value){
+        if (parseInt($(this).val()) == 0 || (!$.isNumeric($(this).val()))){
+            qty_val = true;
+            return false;
+        }
+    })
+
+    if (qty_val) {
+        alert('qty is null');return false;
+    }
+
+    $('.children_ex_mill'+item_id).each(function(key, value){
+        if ($(this).val() == ''){
+            ex_mill_val = true;
+            return false;
+        }
+    })
+
+    if (ex_mill_val) {
+        alert('ex_mill is null');return false;
+    }
+
+    $('.children_eta_date'+item_id).each(function(key, value){
+        if ($(this).val() == ''){
+            eta_date_val = true;
+            return false;
+        }
+    })
+
+    if (eta_date_val) {
+        alert('eta_date is null');return false;
+    }
+
+    var id = 0;
+
+    var item_key = $(that).parent('td').siblings('.amount').find('.children_marzine').length + 1;
+
+    table_row_marzine = '<input style="margin:5px 0px 0px 0px;" type="text" name="newItemschildren['+item_id+'][' + item_key + '][marzine]" value="'+marzoni +'-"  class="form-control children_marzine children'+item_id+item_key+' children_mar_each'+item_id+'" style="">';
+
+    table_row_qty = '<input style="margin:5px 0px 0px 0px;" type="number" min="0" onchange="check_not_shipped(this,'+item_id+');" data-quantity name="newItemschildren['+item_id+'][' + item_key + '][qty]" value="" class="form-control children_qty'+item_id+' children'+item_id+item_key+'">';
+
+    table_row_ex_mill = '<input style="margin:5px 0px 0px 0px;" onchange="check_max_ex_mill(this,'+item_id+');" type="text" id="po_date" name="newItemschildren['+item_id+'][' + item_key + '][ex_mill]" class="form-control datepicker ex_mill_children children'+item_id+item_key+' children_ex_mill'+item_id+'">';
+
+    table_row_eta_date = '<input style="margin:5px 0px 0px 0px;" onchange="check_max_eta_date(this,'+item_id+');" type="text" name="newItemschildren['+item_id+'][' + item_key + '][eta_date]" value="" class="form-control datepicker eta_date_children children'+item_id+item_key+' children_eta_date'+item_id+'">';
+
+    table_raw_del = '<a style="margin:8px 0px 0px 0px;" href="#" class="btn btn-danger pull-left" onclick="delete_children(this, '+item_key+','+item_id+', '+id+'); return false;"><i class="fa fa-times"></i></a>';
+
+
+    if (type) {
+        item_id = '';
+    }
+    table_row_hidden = '<input type="hidden" name="newItemschildren['+item_id+'][' + item_key + '][item_id]" value="'+item_id +'"  class="form-control children'+item_id+item_key+'">';
+
+    $(that).parent('td').siblings('.amount').append(table_row_marzine);
+    $(that).parent('td').siblings('.bold').append(table_row_hidden);
+    $(that).parent('td').siblings('.rate').append(table_row_qty);
+    $(that).parent('td').siblings('.ex_mill').append(table_row_ex_mill);
+    $(that).parent('td').siblings('.eta_date').append(table_row_eta_date);
+    $(that).parent('td').append(table_raw_del)
+ 
+    init_selectpicker();
+    init_datepicker();
+    init_color_pickers();
+
+}
+
+function check_not_shipped(that,itemid)
+{
+    qty = parseInt($(that).parent('td').siblings('.shipped').find('.shipped').val());
+    shipped = parseInt($(that).parent('td').siblings('.dragger').find('.not_shipped').val());
+    this_qty = $(that).val();
+    if (this_qty == '') {
+        this_qty = 0;
+    }
+    val = 0;
+    $('.children_qty'+itemid).each(function(key, value){
+        val += parseInt($(this).val());
+    })
+
+    if (val > shipped) {
+        alert('this qty not greater than qty');
+        $(that).val(0);
+        val = 0;
+        $('.children_qty'+itemid).each(function(key, value){
+            val += parseInt($(this).val());
+        })
+    }
+    
+    end_shipped = shipped - val;
+    $(that).parent('td').siblings('.shipped').find('.shipped').val(end_shipped)
+    
+}
+
+function check_max_ex_mill(that,itemid)
+{
+    now_time = 0;
+    
+    $('.children_ex_mill'+itemid).each(function(key, value){
+        var date = new Date($(this).val());
+        var time1 = date.getTime();
+        if (now_time < time1) {
+            now_time = time1
+            end_time = $(this).val()
+        }
+    })
+    $(that).siblings('.ex_mill').val(end_time)
+}
+
+function check_max_eta_date(that,itemid)
+{
+    now_time = 0;
+    
+    $('.children_eta_date'+itemid).each(function(key, value){
+        var date = new Date($(this).val());
+        var time1 = date.getTime();
+        if (now_time < time1) {
+            now_time = time1
+            end_time = $(this).val()
+        }
+    })
+    $(that).siblings('.eta_date').val(end_time)
+}
+
+function delete_children(row, item_key, itemid, id)
+{
+    $('.children'+itemid+item_key).each(function(key, value){
+        $(this).remove();
+    });
+    $(row).remove();
+
+    // If is edit we need to add to input removed_items to track activity
+    if ($('input[name="isedit"]').length > 0) {
+        $('#removed-items').append(hidden_input('removed_items_chilrden[]', id));
+    }
 }
