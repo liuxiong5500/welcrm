@@ -6106,11 +6106,11 @@ function add_item_to_preview(id) {
         $('.main input[name="art"]').val(response.art);
         $('.main input[name="dis"]').val(response.dis);
         $('.main input[name="col"]').val(response.col);
-        $('.main textarea[name="description"]').val(response.description);
+        $('.main input[name="description"]').val(response.description);
         $('.main input[name="weight"]').val(response.weight);
         $('.main input[name="width"]').val(response.width);
-        $('.main textarea[name="color"]').val(response.color);
-        $('.main textarea[name="style"]').val(response.style);
+        $('.main input[name="color"]').val(response.color);
+        $('.main input[name="style"]').val(response.style);
         $('.main input[name="unit_price"]').val(response.unit_price);
         $('.main input[name="qty"]').val(response.qty);
 
@@ -7643,13 +7643,16 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
     // }
     var val = '';
     var flag = false;
-    $('.marzoni').each(function(key, value){
-        val = $(this).val();
-        if (data.marzoni == val) {
-            flag = true;
-            alert('Marzoni values must be unique');
-        }
-    })
+    if (data.marzoni != '') {
+        $('.marzoni').each(function(key, value){
+            val = $(this).val();
+            if (data.marzoni == val) {
+                flag = true;
+                alert('Marzoni values must be unique');
+            }
+        })
+    }
+
     if (flag) {
         return;
     }
@@ -7691,23 +7694,23 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '</td>';
 
-        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" class="form-control marzoni"></td>';
+        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" data-toggle="tooltip" title="' + data.marzoni + '" class="form-control marzoni"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" value="' + data.art + '" class="form-control"></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" value="' + data.art + '" data-toggle="tooltip" title="' + data.art + '" class="form-control"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][dis]" min="0" value="' + data.dis + '" class="form-control"></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][dis]" min="0" value="' + data.dis + '" data-toggle="tooltip" title="' + data.dis + '" class="form-control"></td>';
 
-        table_row += '<td><input type="text" name="newitems[' + item_key + '][col]" min="0" value="' + data.col + '" class="form-control"></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][col]" min="0" value="' + data.col + '" data-toggle="tooltip" title="' + data.col + '" class="form-control"></td>';
 
-        table_row += '<td><textarea name="newitems[' + item_key + '][description]" class="form-control" rows="5">' + data.description.replace(regex, "\n") + '</textarea></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][description]" class="form-control" data-toggle="tooltip" title="' + data.description.replace(regex, "\n") + '" readonly="readonly" value="' + data.description.replace(regex, "\n") + '"></td>';
 
-        table_row += '<td><input type="number" name="newitems[' + item_key + '][weight]" min="0" value="' + data.weight + '" class="form-control"></td>';
+        table_row += '<td><input type="number" name="newitems[' + item_key + '][weight]" min="0" value="' + data.weight + '" data-toggle="tooltip" title="' + data.weight + '" class="form-control"></td>';
 
-        table_row += '<td><input type="number" name="newitems[' + item_key + '][width]" min="0" value="' + data.width + '" class="form-control"></td>';
+        table_row += '<td><input type="number" name="newitems[' + item_key + '][width]" min="0" value="' + data.width + '" data-toggle="tooltip" title="' + data.width + '" class="form-control"></td>';
 
-        table_row += '<td><textarea name="newitems[' + item_key + '][color]" class="form-control" rows="5">' + data.color + '</textarea></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][color]" class="form-control" data-toggle="tooltip" title="' + data.color + '" readonly="readonly" value="' + data.color + '" data-toggle="tooltip" title="' + data.color + '"></td>';
 
-        table_row += '<td><textarea name="newitems[' + item_key + '][style]" class="form-control" rows="5">' + data.style + '</textarea></td>';
+        table_row += '<td><input type="text" name="newitems[' + item_key + '][style]" class="form-control" data-toggle="tooltip" title="' + data.style + '" readonly="readonly" value="' + data.style + '" data-toggle="tooltip" title="' + data.style + '"></td>';
 
         var custom_fields = $('tr.main td.custom_field');
         var cf_has_required = false;
@@ -7782,19 +7785,19 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
             });
         }
 
-        table_row += '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="newitems[' + item_key + '][unit_price]" value="' + data.unit_price + '" class="form-control"></td>';
+        table_row += '<td><input type="number" min="0" onblur="calculate_total();" onchange="calculate_total();" data-quantity name="newitems[' + item_key + '][unit_price]" readonly="readonly" value="' + data.unit_price + '" data-toggle="tooltip" title="' + data.unit_price + '" class="form-control"></td>';
 
-        table_row += '<td class="amount" align="right"><input type="text" class="amount_total form-control" value="' + amount + '"  readonly="readonly"></td>';
+        table_row += '<td class="amount" align="right"><input type="text" class="amount_total form-control" value="' + amount + '"  readonly="readonly" data-toggle="tooltip" title="' + amount + '"></td>';
 
-        table_row += '<td class="rate"><input type="number" data-toggle="tooltip" title="' + appLang.item_field_not_formatted + '" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" class="form-control qty"></td>';
+        table_row += '<td class="rate"><input type="number" onblur="calculate_total();" onchange="calculate_total();" name="newitems[' + item_key + '][qty]" value="' + data.qty + '" data-toggle="tooltip" title="' + data.qty + '" class="form-control qty"></td>';
 
         // table_row += '<td class="taxrate">' + tax_dropdown + '</td>';
 
-        table_row += '<td class="shipped" align="right"><input class="shipped form-control" name="newitems[' + item_key + '][not_shipped]" value="' + data.qty + '" readonly="readonly"></td>';
+        table_row += '<td class="shipped" align="right"><input class="shipped form-control" name="newitems[' + item_key + '][not_shipped]" value="' + data.qty + '" data-toggle="tooltip" title="' + data.qty + '"></td>';
 
-        table_row += '<td class="ex_mill"><input type="text" id="po_date" name="newitems[' + item_key + '][ex_mill]" readonly="readonly" value="' + data.ex_mill + '" class="form-control ex_mill"></td>';
+        table_row += '<td class="ex_mill"><input type="text" id="po_date" name="newitems[' + item_key + '][ex_mill]" readonly="readonly" value="' + data.ex_mill + '" data-toggle="tooltip" title="' + data.ex_mill + '" class="form-control ex_mill"></td>';
 
-        table_row += '<td class="eta_date"><input type="text" name="newitems[' + item_key + '][eta_date]" readonly="readonly" value="' + data.eta_date + '" class="form-control eta_date"></td>';
+        table_row += '<td class="eta_date"><input type="text" name="newitems[' + item_key + '][eta_date]" readonly="readonly" value="' + data.eta_date + '" data-toggle="tooltip" title="' + data.eta_date + '" class="form-control eta_date"></td>';
 
         table_row += '<td><a href="#" class="btn pull-right btn-info"  onclick="add_item(this,' + item_key + ',1); return false;"><i class="fa fa-plus"></i></a></td>';
 
@@ -7868,11 +7871,11 @@ function get_item_preview_values2() {
     response.art = $('.main input[name="art"]').val();
     response.dis = $('.main input[name="dis"]').val();
     response.col = $('.main input[name="col"]').val();
-    response.description = $('.main textarea[name="description"]').val();
+    response.description = $('.main input[name="description"]').val();
     response.weight = $('.main input[name="weight"]').val();
     response.width = $('.main input[name="width"]').val();
-    response.color = $('.main textarea[name="color"]').val();
-    response.style = $('.main textarea[name="style"]').val();
+    response.color = $('.main input[name="color"]').val();
+    response.style = $('.main input[name="style"]').val();
     response.unit_price = $('.main input[name="unit_price"]').val();
     response.qty = $('.main input[name="qty"]').val();
     response.taxname = $('.main select.tax').selectpicker('val');
@@ -7944,9 +7947,9 @@ function checkEmpty(data)
     //     return false;
     // }
 
-    if (data.marzoni == '') {
-        return false;
-    }
+    // if (data.marzoni == '') {
+    //     return false;
+    // }
 
     if (data.qty == '') {
         return false;

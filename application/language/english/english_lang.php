@@ -4145,3 +4145,7 @@ $lang['purchase_order_qty'] = 'Qty';
 $lang['purchase_order_not_shipped'] = 'Not shipped';
 $lang['purchase_order_ex_mill'] = 'Ex Mill';
 $lang['purchase_order_eta_date'] = 'ETA Date';
+$lang['goods_receives'] = 'Goods Received';
+$lang['goods_receives_po_no'] = 'PONO';
+$lang['goods_receives_batch_no'] = 'Batch No';
+$lang['goods_receives_in_qty'] = 'In QTY';

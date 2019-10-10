@@ -517,7 +517,7 @@ function get_items_children_by_item($item_id)
 {
     $CI = &get_instance();
     $CI->db->select();
-    $CI->db->from('tblitems_in_children');
+    $CI->db->from('tblitems_in_tx');
     $CI->db->where('item_id', $item_id);
     return $CI->db->get()->result_array();
 }
@@ -663,6 +663,7 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
         'item_order'       => $item['order'],
         'ex_mill'       => $item['ex_mill'],
         'eta_date'       => $item['eta_date'],
+        'prepared_by' => get_staff_user_id(),
     ]);
 
     $id = $CI->db->insert_id();
@@ -684,7 +685,7 @@ function add_new_children_item_post($item, $itemId = 0)
     } else {
         $item_id = $item['item_id'];
     }
-    $CI->db->insert('tblitems_in_children', [
+    $CI->db->insert('tblitems_in_tx', [
         'marzoni' => $item['marzine'],
         'item_id' => $item_id,
         'qty' => $item['qty'],
@@ -738,6 +739,7 @@ function update_sales_item_post($item_id, $data, $field = '')
             'item_order'       => $data['order'],
             'ex_mill'       => $data['ex_mill'],
             'eta_date'       => $data['eta_date'],
+
         ];
     }
 
@@ -760,7 +762,7 @@ function update_children_item_post($item_id, $data)
 
     $CI = &get_instance();
     $CI->db->where('id', $item_id);
-    $CI->db->update('tblitems_in_children', $update);
+    $CI->db->update('tblitems_in_tx', $update);
 
     return $CI->db->affected_rows() > 0 ? true : false;
 }
@@ -796,7 +798,7 @@ function handle_removed_children_item_post($id)
     $CI = &get_instance();
 
     $CI->db->where('id', $id);
-    $CI->db->delete('tblitems_in_children');
+    $CI->db->delete('tblitems_in_tx');
     if ($CI->db->affected_rows() > 0) {
     
         return true;
