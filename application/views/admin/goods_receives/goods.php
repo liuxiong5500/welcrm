@@ -61,8 +61,8 @@
                     </div>
                 </div>
             </div>
-<!--            style="display:none;"-->
-            <div class="col-md-12 table_goods">
+
+            <div class="col-md-12 table_goods" style="display:none;">
                 <div class="panel_s">
                     <?php $this->load->view('admin/goods_receives/items_in_tx', ['type' => 'purchase-order']); ?>
                 </div>
