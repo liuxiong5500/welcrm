@@ -8,6 +8,7 @@ function my_custom_menu_items($order)
     }
     if ($order == 3) {
         echo '<li><a href="' . admin_url('purchase_orders') . '"><i class="fa fa-bars menu-icon"></i>' . _l('purchase_orders_menu') . '</a></li>';
+        echo '<li><a href="' . admin_url('goods_receives') . '"><i class="fa fa-user-o menu-icon"></i>' . _l('goods_receives') . '</a></li>'; 
         echo '<li><a href="' . admin_url('suppliers') . '"><i class="fa fa-user-o menu-icon"></i>' . _l('suppliers_menu') . '</a></li>';
     }
     if ($order == 13) {

@@ -8131,3 +8131,61 @@ function delete_children(row, item_key, itemid, id)
         $('#removed-items').append(hidden_input('removed_items_chilrden[]', id));
     }
 }
+
+function add_item_in_tx_to_preview(id) {
+    requestGetJSON('invoice_items/get_item_by_id/' + id).done(function (response) {
+        clear_item_preview_values();
+
+        $('.main input[name="art"]').val(response.art);
+        $('.main input[name="dis"]').val(response.dis);
+        $('.main input[name="col"]').val(response.col);
+        $('.main input[name="description"]').val(response.description);
+        $('.main input[name="weight"]').val(response.weight);
+        $('.main input[name="width"]').val(response.width);
+        $('.main input[name="color"]').val(response.color);
+        $('.main input[name="style"]').val(response.style);
+        $('.main input[name="unit_price"]').val(response.unit_price);
+        $('.main input[name="qty"]').val(response.qty);
+
+        // $('.main textarea[name="long_description"]').val(response.long_description.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, " "));
+
+        _set_item_preview_custom_fields_array(response.custom_fields);
+
+
+
+        var taxSelectedArray = [];
+        if (response.taxname && response.taxrate) {
+            taxSelectedArray.push(response.taxname + '|' + response.taxrate);
+        }
+        if (response.taxname_2 && response.taxrate_2) {
+            taxSelectedArray.push(response.taxname_2 + '|' + response.taxrate_2);
+        }
+
+        $('.main select.tax').selectpicker('val', taxSelectedArray);
+        $('.main input[name="unit"]').val(response.unit);
+
+        var $currency = $("body").find('.accounting-template select[name="currency"]');
+        var baseCurency = $currency.attr('data-base');
+        var selectedCurrency = $currency.find('option:selected').val();
+        var $rateInputPreview = $('.main input[name="rate"]');
+
+        if (baseCurency == selectedCurrency) {
+            $rateInputPreview.val(response.rate);
+        } else {
+            var itemCurrencyRate = response['rate_currency_' + selectedCurrency];
+            if (!itemCurrencyRate || parseFloat(itemCurrencyRate) === 0) {
+                $rateInputPreview.val(response.rate);
+            } else {
+                $rateInputPreview.val(itemCurrencyRate);
+            }
+        }
+
+        $(document).trigger({
+            type: "item-added-to-preview",
+            item: response,
+            item_type: 'item',
+        });
+    });
+}
+
+
