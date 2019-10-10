@@ -437,7 +437,7 @@ class Purchase_orders_model extends CRM_Model
                 $affectedRows++;
             }
         }
-        
+        $new_item_added = 0;
         foreach ($newitems as $key => $item) {
             if ($new_item_added = add_new_sales_item_post($item, $id, 'purchase_order')) {
                 _maybe_insert_post_item_tax($new_item_added, $item, $id, 'purchase_order');
@@ -448,12 +448,15 @@ class Purchase_orders_model extends CRM_Model
         $newChildren = [];
         foreach ($newChildrenItem as $v) {
             foreach ($v as $val) {
+                if (empty($val['marzine'])) {
+                    continue;
+                }
                 $newChildren[] = $val;
             }
         }
-        
+
         foreach ($newChildren as $key => $item) {
-            if ($new_item_added = add_new_children_item_post($item)) {
+            if (add_new_children_item_post($item, $new_item_added)) {
                 $affectedRows++;
             }
         }

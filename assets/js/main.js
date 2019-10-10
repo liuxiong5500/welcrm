@@ -8125,7 +8125,6 @@ function delete_children(row, item_key, itemid, id)
         $(this).remove();
     });
     $(row).remove();
-
     // If is edit we need to add to input removed_items to track activity
     if ($('input[name="isedit"]').length > 0) {
         $('#removed-items').append(hidden_input('removed_items_chilrden[]', id));
