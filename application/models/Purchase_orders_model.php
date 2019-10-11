@@ -314,7 +314,7 @@ class Purchase_orders_model extends CRM_Model
                 $affectedRows++;
             }
         }
-        
+
         unset($data['removed_items']);
         if (isset($data['removed_items_chilrden'])) {
             foreach ($data['removed_items_chilrden'] as $remove_children_item_id) {
@@ -487,6 +487,9 @@ class Purchase_orders_model extends CRM_Model
             $this->db->where('fieldto', 'items');
             $this->db->delete('tblcustomfieldsvalues');
 
+            $this->db->where('item_id IN (SELECT id from tblitems_in WHERE rel_id="' . $id . '")');
+            $this->db->delete('tblitems_in_tx');
+
             $this->db->where('rel_id', $id);
             $this->db->where('rel_type', 'purchase_order');
             $this->db->delete('tblitems_in');
@@ -498,6 +501,7 @@ class Purchase_orders_model extends CRM_Model
             $this->db->where('relid', $id);
             $this->db->where('fieldto', 'purchase_order');
             $this->db->delete('tblcustomfieldsvalues');
+
 
             return true;
         }
