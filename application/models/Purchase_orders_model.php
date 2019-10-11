@@ -189,6 +189,9 @@ class Purchase_orders_model extends CRM_Model
                 }
                 $newChildren = $newChildrenItem[$key];
                 foreach ($newChildren as $val) {
+                    if (empty($val['marzine'])) {
+                        continue;
+                    }
                     $new_item_added = add_new_children_item_post($val, $itemid);
                 }
             }

@@ -8121,9 +8121,19 @@ function check_max_eta_date(that,itemid)
 
 function delete_children(row, item_key, itemid, id)
 {
+    var shipped = parseInt($(row).parent('td').siblings('.dragger').find('.not_shipped').val());
+
     $('.children'+itemid+item_key).each(function(key, value){
         $(this).remove();
     });
+
+    var val = 0;
+    $('.children_qty'+itemid).each(function(key, value){
+        val += parseInt($(this).val());
+    })
+
+    var end_shipped = shipped - val;
+    $(row).parent('td').siblings('.shipped').find('.shipped').val(end_shipped)
     $(row).remove();
     // If is edit we need to add to input removed_items to track activity
     if ($('input[name="isedit"]').length > 0) {
