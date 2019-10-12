@@ -1959,39 +1959,39 @@ $(function () {
     $("body").on('submit', '._transaction_form', function () {
 
         // On submit re-calculate total and reorder the items for all cases.
-        calculate_total();
-
-        $('body').find('#items-warning').remove();
-        var $itemsTable = $(this).find('table.items');
-        var $previewItem = $itemsTable.find('.main');
-
-        if ($previewItem.find('[name="description"]').length && $previewItem.find('[name="description"]').val().trim().length > 0 &&
-            $previewItem.find('[name="rate"]').val().trim().length > 0) {
-
-            $itemsTable.before('<div class="alert alert-warning mbot20" id="items-warning">' + appLang.item_forgotten_in_preview + '<i class="fa fa-angle-double-down pointer pull-right fa-2x" style="margin-top:-4px;" onclick="add_item_to_table(\'undefined\',\'undefined\',undefined); return false;"></i></div>');
-
-            $('html,body').animate({
-                scrollTop: $("#items-warning").offset().top
-            });
-
-            return false;
-
-        } else {
-            if ($itemsTable.length && $itemsTable.find('.item').length === 0) {
-                $itemsTable.before('<div class="alert alert-warning mbot20" id="items-warning">' + appLang.no_items_warning + '</div>');
-                $('html,body').animate({
-                    scrollTop: $("#items-warning").offset().top
-                });
-                return false;
-            }
-        }
-
-        reorder_items();
-
-        // Remove the disabled attribute from the disabled fields becuase if they are disabled won't be sent with the request.
-        $('select[name="currency"]').prop('disabled', false);
-        $('select[name="project_id"]').prop('disabled', false);
-        $('input[name="date"]').prop('disabled', false);
+        // calculate_total();
+        //
+        // $('body').find('#items-warning').remove();
+        // var $itemsTable = $(this).find('table.items');
+        // var $previewItem = $itemsTable.find('.main');
+        //
+        // if ($previewItem.find('[name="description"]').length && $previewItem.find('[name="description"]').val().trim().length > 0 &&
+        //     $previewItem.find('[name="rate"]').val().trim().length > 0) {
+        //
+        //     $itemsTable.before('<div class="alert alert-warning mbot20" id="items-warning">' + appLang.item_forgotten_in_preview + '<i class="fa fa-angle-double-down pointer pull-right fa-2x" style="margin-top:-4px;" onclick="add_item_to_table(\'undefined\',\'undefined\',undefined); return false;"></i></div>');
+        //
+        //     $('html,body').animate({
+        //         scrollTop: $("#items-warning").offset().top
+        //     });
+        //
+        //     return false;
+        //
+        // } else {
+        //     if ($itemsTable.length && $itemsTable.find('.item').length === 0) {
+        //         $itemsTable.before('<div class="alert alert-warning mbot20" id="items-warning">' + appLang.no_items_warning + '</div>');
+        //         $('html,body').animate({
+        //             scrollTop: $("#items-warning").offset().top
+        //         });
+        //         return false;
+        //     }
+        // }
+        //
+        // reorder_items();
+        //
+        // // Remove the disabled attribute from the disabled fields becuase if they are disabled won't be sent with the request.
+        // $('select[name="currency"]').prop('disabled', false);
+        // $('select[name="project_id"]').prop('disabled', false);
+        // $('input[name="date"]').prop('disabled', false);
 
         // Add disabled to submit buttons
         $(this).find('.transaction-submit').prop('disabled', true);
@@ -8142,59 +8142,49 @@ function delete_children(row, item_key, itemid, id)
 }
 
 function add_item_in_tx_to_preview(id) {
-    requestGetJSON('invoice_items/get_item_by_id/' + id).done(function (response) {
-        clear_item_preview_values();
+    if (id == '') {
+        id = 0;
+    }
+    $('.table_goods_detail').find('tr').remove();
+    requestGetJSON('goods_receives/get_item_by_id/' + id).done(function (response) {
+        var html = '';
+        $.each(response, function(index, value){
+            html += '<tr class="main del'+value.id+'">';
+            html += '<td></td>';
+            html += '<input type="hidden" name="add_new['+index+'][item_id]" class="form-control item_id'+value.id+'" value="'+value.item_id+'">';
+            html += '<input type="hidden" name="add_new['+index+'][in_tx_id]" class="form-control in_tx_id'+value.id+'" value="'+value.id+'">';
+            html += '<input type="hidden" class="form-control hidden_qty'+value.id+'" value="'+value.qty+'">';
+            html += '<td><input type="text" name="add_new['+index+'][po_no]" class="form-control po_no'+value.id+'" disabled="disabled" value="'+value.po_no+'"></td>';
+            html += '<td><input type="text" name="add_new['+index+'][marzoni]" class="form-control marzoni'+value.id+'" disabled="disabled" value="'+value.marzoni+'"></td>';
+            html += '<td><input type="text" name="add_new['+index+'][qty]" class="form-control qty'+value.id+'" value="'+value.qty+'" onchange=""></td>';
+            html += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_goods(this,'+value.id+'); return false;"><i class="fa fa-times"></i></a></td>';
+            html += '</tr>';
+        })
 
-        $('.main input[name="art"]').val(response.art);
-        $('.main input[name="dis"]').val(response.dis);
-        $('.main input[name="col"]').val(response.col);
-        $('.main input[name="description"]').val(response.description);
-        $('.main input[name="weight"]').val(response.weight);
-        $('.main input[name="width"]').val(response.width);
-        $('.main input[name="color"]').val(response.color);
-        $('.main input[name="style"]').val(response.style);
-        $('.main input[name="unit_price"]').val(response.unit_price);
-        $('.main input[name="qty"]').val(response.qty);
-
-        // $('.main textarea[name="long_description"]').val(response.long_description.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g, " "));
-
-        _set_item_preview_custom_fields_array(response.custom_fields);
-
-
-
-        var taxSelectedArray = [];
-        if (response.taxname && response.taxrate) {
-            taxSelectedArray.push(response.taxname + '|' + response.taxrate);
-        }
-        if (response.taxname_2 && response.taxrate_2) {
-            taxSelectedArray.push(response.taxname_2 + '|' + response.taxrate_2);
-        }
-
-        $('.main select.tax').selectpicker('val', taxSelectedArray);
-        $('.main input[name="unit"]').val(response.unit);
-
-        var $currency = $("body").find('.accounting-template select[name="currency"]');
-        var baseCurency = $currency.attr('data-base');
-        var selectedCurrency = $currency.find('option:selected').val();
-        var $rateInputPreview = $('.main input[name="rate"]');
-
-        if (baseCurency == selectedCurrency) {
-            $rateInputPreview.val(response.rate);
-        } else {
-            var itemCurrencyRate = response['rate_currency_' + selectedCurrency];
-            if (!itemCurrencyRate || parseFloat(itemCurrencyRate) === 0) {
-                $rateInputPreview.val(response.rate);
-            } else {
-                $rateInputPreview.val(itemCurrencyRate);
-            }
-        }
-
-        $(document).trigger({
-            type: "item-added-to-preview",
-            item: response,
-            item_type: 'item',
-        });
+        $('.table_goods_detail').append(html);
     });
+}
+
+
+function validate_goods_receive_form(selector) {
+    selector = typeof (selector) == 'undefined' ? '#goods-receive-form' : selector;
+    _validate_form($(selector), {
+        clientid: {
+            required: {
+                depends: function () {
+                    var customerRemoved = $('select#clientid').hasClass('customer-removed');
+                    return !customerRemoved;
+                }
+            }
+        },
+        supplier: 'required',
+        ware_house: 'required',
+    });
+}
+
+function delete_goods(row, id)
+{
+    $('.del'+id).remove();
 }
 
 

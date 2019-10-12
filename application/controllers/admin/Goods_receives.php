@@ -7,7 +7,7 @@ class Goods_receives extends Admin_controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['items_in_children_model', 'suppliers_model', 'customer_warehouses_model']);
+        $this->load->model(['items_in_tx_model', 'suppliers_model', 'customer_warehouses_model', 'items_in_tx_detail_model']);
     }
 
     public function index()
@@ -16,6 +16,15 @@ class Goods_receives extends Admin_controller
     }
     public function goods()
     {
+        if ($this->input->post()) {
+            $purchase_order_data = $this->input->post();
+            $id = $this->items_in_tx_detail_model->add($purchase_order_data);
+            if ($id) {
+                set_alert('success', _l('added_successfully', _l('goods_receive')));
+            }
+            redirect(admin_url('goods_receives'));
+        }
+
         $data['suppliers'] = $this->suppliers_model->get();
         $data['warehouse'] = $this->customer_warehouses_model->get('');
 
@@ -25,6 +34,15 @@ class Goods_receives extends Admin_controller
     public function table()
     {
         $this->app->get_table_data('goods_receives');
+    }
+
+    /* Get item by id / ajax */
+    public function get_item_by_id($id)
+    {
+        if ($this->input->is_ajax_request()) {
+            $item = $this->items_in_tx_model->get($id);
+            echo json_encode($item);
+        }
     }
 
 }

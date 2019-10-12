@@ -4,35 +4,21 @@
             <thead>
             <tr>
                 <th></th>
-                <th width="33%" align="center">
+                <th width="32%" align="center">
                     <i class="fa fa-exclamation-circle" aria-hidden="true"
                        data-toggle="tooltip"
                        data-title="<?php echo _l('goods_receives_po_no'); ?>">
                     </i> <?php echo _l('goods_receives_po_no'); ?>
                 </th>
-                <th width="33%" align="center"><?php echo _l('goods_receives_batch_no'); ?></th>
-                <th width="33%" align="center"><?php echo _l('goods_receives_in_qty'); ?></th>
+                <th width="32%" align="center"><?php echo _l('goods_receives_batch_no'); ?></th>
+                <th width="32%" align="center"><?php echo _l('goods_receives_in_qty'); ?></th>
+                <th width="4%" align="center"><i class="fa fa-cog"></i></th>
             </tr>
             </thead>
-            <tbody>
-            <tr class="main">
-                <td></td>
-                <td>
-                    <input type="number" name="marzoni" min="0" class="form-control"
-                           placeholder="<?php echo _l('goods_receives_po_no'); ?>">
-                </td>
-                <td>
-                    <input type="text" placeholder="<?php echo _l('goods_receives_batch_no'); ?>" name="art"
-                           class="form-control">
-                </td>
-                <td>
-                    <input type="text" placeholder="<?php echo _l('goods_receives_in_qty'); ?>" name="dis"
-                           class="form-control">
-                </td>
+            <tbody class="table_goods_detail">
 
-            </tr>
             </tbody>
+
         </table>
     </div>
-    <div id="removed-items"></div>
 </div>

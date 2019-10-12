@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-$this->ci->load->model('items_in_children_model');
+$this->ci->load->model('Items_in_tx_model');
 
 $aColumns = [
     'tblitems_in_tx.marzoni as marzoni',

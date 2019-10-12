@@ -522,6 +522,24 @@ function get_items_children_by_item($item_id)
     return $CI->db->get()->result_array();
 }
 
+function get_order()
+{
+    $CI = &get_instance();
+    $CI->db->select('id,order_number,supplier');
+    $CI->db->from('tblpurchaseorders');
+
+    return $CI->db->get()->result_array();
+}
+
+function get_items_in()
+{
+    $CI = &get_instance();
+    $CI->db->select('id,rel_id');
+    $CI->db->from('tblitems_in');
+
+    return $CI->db->get()->result_array();
+}
+
 /**
 * Function that update total tax in sales table eq. invoice, proposal, estimates, credit note
 * @param  mixed $id
