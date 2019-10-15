@@ -538,4 +538,29 @@ class Purchase_orders_model extends CRM_Model
         $this->db->update('tblpurchaseorders', $data);
         return true;
     }
+
+    public function get_goods_receive_detail($id = '', $where = [])
+    {
+        $this->db->select(['tblpurchaseorders.id', 'tblpurchaseorders.order_number']);
+        $this->db->from('tblpurchaseorders');
+//        $this->db->join('tblcustomerwarehouses', 'tblcustomerwarehouses.id = tblpurchaseorders.warehouse', 'left');
+        $this->db->where($where);
+        if (is_numeric($id)) {
+            $this->db->where('tblpurchaseorders.id', $id);
+            $purchase_order = $this->db->get()->row();
+            if ($purchase_order) {
+                $purchase_order->items = get_items_by_type('purchase_order', $id);
+                foreach ($purchase_order->items as &$v) {
+                    $v['children'] = get_items_children_by_item($v['id']);
+                    foreach ($v['children'] as &$val) {
+                        $val['detail'] = get_tx_detail($val['id'], $val['item_id']);
+                        array_unshift($val['detail'], ['type' => 0]);
+                    }
+                }
+            }
+
+            return $purchase_order;
+        }
+        return $this->db->get()->result_array();
+    }
 }

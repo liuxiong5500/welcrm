@@ -522,6 +522,16 @@ function get_items_children_by_item($item_id)
     return $CI->db->get()->result_array();
 }
 
+function get_tx_detail($id, $item_id)
+{
+    $CI = &get_instance();
+    $CI->db->select();
+    $CI->db->from('tblitems_in_tx_detail');
+    $CI->db->where('in_tx_id', $id);
+    $CI->db->where('item_id', $item_id);
+    return $CI->db->get()->result_array();
+}
+
 function get_order()
 {
     $CI = &get_instance();

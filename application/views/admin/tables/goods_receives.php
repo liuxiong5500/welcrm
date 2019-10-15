@@ -1,25 +1,23 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-$this->ci->load->model('Items_in_tx_model');
+$this->ci->load->model('purchase_orders_model');
 
 $aColumns = [
-    'tblitems_in_tx.marzoni as marzoni',
-    'items.rel_id as item_po_number',
-    'tblitems_in_tx.qty as qty'
+    'order_number',
 ];
 $sIndexColumn = 'id';
-$sTable = 'tblitems_in_tx';
+$sTable = 'tblpurchaseorders';
 $where = [];
 // Add blank where all filter can be stored
 $filter = [];
 
 $join = [
-    'LEFT JOIN tblitems_in AS items ON items.id=tblitems_in_tx.item_id',
+//    'LEFT JOIN tblitems_in AS items ON items.id=tblitems_in_tx.item_id',
 ];
 
 $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, [
-    'tblitems_in_tx.id'
+    'tblpurchaseorders.id'
 ]);
 
 $output = $result['output'];
@@ -27,18 +25,18 @@ $rResult = $result['rResult'];
 
 foreach ($rResult as $aRow) {
     $row = [];
-    $url = admin_url('purchase_orders/view/' . $aRow['id']);
-    $order_number = '<a href="' . $url . '">' . $aRow['marzoni'] . '</a>';
-    $order_number .= '<div class="row-options">';
-//    if ($aRow['status'] == 1) {
-//        $order_number .= '<a href="' . admin_url('purchase_orders/approve/' . $aRow['id']) . '">' . _l('approve') . '</a> | ';
-//    }
-    $order_number .= '<a href="' . admin_url('purchase_orders/order/' . $aRow['id']) . '">' . _l('edit') . '</a>';
-    $order_number .= ' | <a href="' . admin_url('purchase_orders/delete/' . $aRow['id']) . '">' . _l('delete') . '</a>';
-    $order_number .= '</div>';
+    $url = admin_url('goods_receives/view/' . $aRow['id']);
+    $order_number = '<a href="' . $url . '">' . $aRow['order_number'] . '</a>';
+//    $order_number .= '<div class="row-options">';
+////    if ($aRow['status'] == 1) {
+////        $order_number .= '<a href="' . admin_url('purchase_orders/approve/' . $aRow['id']) . '">' . _l('approve') . '</a> | ';
+////    }
+//    $order_number .= '<a href="' . admin_url('purchase_orders/order/' . $aRow['id']) . '">' . _l('edit') . '</a>';
+//    $order_number .= ' | <a href="' . admin_url('purchase_orders/delete/' . $aRow['id']) . '">' . _l('delete') . '</a>';
+//    $order_number .= '</div>';
     $row[] = $order_number;
-    $row[] = $aRow['item_po_number'];
-    $row[] = $aRow['qty'];
+//    $row[] = $aRow['item_po_number'];
+//    $row[] = $aRow['qty'];
 //    $row[] = $aRow['warehouse_name'];
 //    $row[] = $aRow['pe_number'];
 //    $row[] = _d(date('Y-m-d', strtotime($aRow['po_date'])));

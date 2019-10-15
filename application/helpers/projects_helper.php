@@ -265,6 +265,16 @@ function get_purchase_order_item_shipped($id)
     return $count->shipped;
 }
 
+function get_house_name_by_id($id)
+{
+    $CI = &get_instance();
+    if (!class_exists('tblcustomerwarehouses')) {
+        $CI->load->model('customer_warehouses_model');
+    }
+    $shipment_term = $CI->customer_warehouses_model->get($id);
+    return $shipment_term->name;
+}
+
 /**
  * Return logged in user pinned projects
  * @return array

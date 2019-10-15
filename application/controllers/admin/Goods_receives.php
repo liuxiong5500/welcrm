@@ -7,7 +7,7 @@ class Goods_receives extends Admin_controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(['items_in_tx_model', 'suppliers_model', 'customer_warehouses_model', 'items_in_tx_detail_model']);
+        $this->load->model(['items_in_tx_model', 'suppliers_model', 'customer_warehouses_model', 'items_in_tx_detail_model', 'purchase_orders_model']);
     }
 
     public function index()
@@ -43,6 +43,19 @@ class Goods_receives extends Admin_controller
             $item = $this->items_in_tx_model->get($id);
             echo json_encode($item);
         }
+    }
+
+    public function view($id)
+    {
+        if (!$id) {
+            redirect(admin_url('goods_receives'));
+        }
+        $order = $this->purchase_orders_model->get_goods_receive_detail($id);
+
+        $data['order'] = $order;
+        $data['title'] = _l('purchase_order');
+//        print_r($data);die;
+        $this->load->view('admin/goods_receives/view', $data);
     }
 
 }

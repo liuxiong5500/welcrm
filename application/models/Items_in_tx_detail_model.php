@@ -21,6 +21,7 @@ class Items_in_tx_detail_model extends CRM_Model
                 $addData['item_id'] = $v['item_id'];
                 $addData['ware_house'] = $data['ware_house'];
                 $addData['gr_date'] = $data['gr_date'];
+                $addData['prepared_by'] = get_staff_user_id();
                 $this->db->insert('tblitems_in_tx_detail', $addData);
             }
         }
