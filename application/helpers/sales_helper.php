@@ -708,7 +708,7 @@ function add_new_children_item_post($item, $itemId = 0)
     
     $CI = &get_instance();
 
-    if (!isset($item['item_id'])) {
+    if (empty($item['item_id'])) {
         $item_id = $itemId;
     } else {
         $item_id = $item['item_id'];

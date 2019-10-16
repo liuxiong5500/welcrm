@@ -8045,9 +8045,11 @@ function add_item(that, item_id, type = null)
 
 
     if (type) {
-        item_id = '';
+        table_row_hidden = '<input type="hidden" name="newItemschildren['+item_id+'][' + item_key + '][item_id]" value=""  class="form-control children'+item_id+item_key+'">';
+    } else {
+        table_row_hidden = '<input type="hidden" name="newItemschildren['+item_id+'][' + item_key + '][item_id]" value="'+item_id +'"  class="form-control children'+item_id+item_key+'">';
     }
-    table_row_hidden = '<input type="hidden" name="newItemschildren['+item_id+'][' + item_key + '][item_id]" value="'+item_id +'"  class="form-control children'+item_id+item_key+'">';
+
 
     $(that).parent('td').siblings('.amount').append(table_row_marzine);
     $(that).parent('td').siblings('.bold').append(table_row_hidden);
@@ -8156,7 +8158,7 @@ function add_item_in_tx_to_preview(id) {
             html += '<input type="hidden" class="form-control hidden_qty'+value.id+'" value="'+value.qty+'">';
             html += '<td><input type="text" name="add_new['+index+'][po_no]" class="form-control po_no'+value.id+'" disabled="disabled" value="'+value.po_no+'"></td>';
             html += '<td><input type="text" name="add_new['+index+'][marzoni]" class="form-control marzoni'+value.id+'" disabled="disabled" value="'+value.marzoni+'"></td>';
-            html += '<td><input type="text" name="add_new['+index+'][qty]" class="form-control qty'+value.id+'" value="'+value.qty+'" onchange=""></td>';
+            html += '<td><input type="text" name="add_new['+index+'][qty]" class="form-control qty'+value.id+'" value="'+value.qty+'" onchange="check_qty(this,'+value.id+')"></td>';
             html += '<td><a href="#" class="btn btn-danger pull-left" onclick="delete_goods(this,'+value.id+'); return false;"><i class="fa fa-times"></i></a></td>';
             html += '</tr>';
         })
@@ -8185,6 +8187,16 @@ function validate_goods_receive_form(selector) {
 function delete_goods(row, id)
 {
     $('.del'+id).remove();
+}
+
+function check_qty(row, id)
+{
+    var qty = parseInt($(row).val());
+    var hidden_qty = parseInt($('.hidden_qty'+id).val());
+    if (qty > hidden_qty) {
+        $(row).val(hidden_qty);
+        alert('qty less than or equal In QTY')
+    }
 }
 
 
