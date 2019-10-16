@@ -1,9 +1,9 @@
 <div class="panel-body mtop10">
     <div class="table-responsive s_table">
-        <table class="table estimate-items-table items table-main-estimate-edit no-mtop">
+        <table class="table estimate-items-table items table-main-estimate-edit no-mtop" id="tab">
             <thead>
             <tr>
-                <th></th>
+                <th><input type="checkbox" id="selectAll" class="form-control"/>全选</th>
                 <th width="32%" align="center">
                     <i class="fa fa-exclamation-circle" aria-hidden="true"
                        data-toggle="tooltip"

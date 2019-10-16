@@ -45,12 +45,12 @@ class Goods_receives extends Admin_controller
         }
     }
 
-    public function view($id)
+    public function view($number)
     {
-        if (!$id) {
+        if (!$number) {
             redirect(admin_url('goods_receives'));
         }
-        $order = $this->purchase_orders_model->get_goods_receive_detail($id);
+        $order = $this->purchase_orders_model->get_goods_receive_detail($number);
 
         $data['order'] = $order;
         $data['title'] = _l('purchase_order');

@@ -7694,7 +7694,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
 
         table_row += '</td>';
 
-        table_row += '<td class="bold"><input type="number" name="newitems[' + item_key + '][marzoni]" min="0" value="' + data.marzoni + '" data-toggle="tooltip" title="' + data.marzoni + '" class="form-control marzoni"></td>';
+        table_row += '<td class="bold"><input type="text" name="newitems[' + item_key + '][marzoni]" value="' + data.marzoni + '" data-toggle="tooltip" title="' + data.marzoni + '" class="form-control marzoni"></td>';
 
         table_row += '<td><input type="text" name="newitems[' + item_key + '][art]" value="' + data.art + '" data-toggle="tooltip" title="' + data.art + '" class="form-control"></td>';
 
@@ -7976,6 +7976,8 @@ function checkEmpty(data)
 
 function add_item(that, item_id, type = null)
 {
+    var mar_id = 0;
+    var mar = [];
     var mar_each = [];
     var qty_val = false;
     var ex_mill_val = false;
@@ -7990,7 +7992,11 @@ function add_item(that, item_id, type = null)
         } else {
             mar_each.push($(this).val());
         }
+
+        mar_id = $(this).val().split('-');
+        mar[key] = mar_id[mar_id.length - 1];
     })
+    mar_id = parseInt(Math.max.apply(null, mar)) + 1;
 
     if (mar_each_val) {
         alert('mar_each is unique');return false;
@@ -8033,7 +8039,7 @@ function add_item(that, item_id, type = null)
 
     var item_key = $(that).parent('td').siblings('.amount').find('.children_marzine').length + 1;
 
-    table_row_marzine = '<input style="margin:5px 0px 0px 0px;" type="text" name="newItemschildren['+item_id+'][' + item_key + '][marzine]" value="'+marzoni +'-"  class="form-control children_marzine children'+item_id+item_key+' children_mar_each'+item_id+'" style="">';
+    table_row_marzine = '<input style="margin:5px 0px 0px 0px;" type="text" name="newItemschildren['+item_id+'][' + item_key + '][marzine]" value="'+marzoni +'-'+mar_id+'"  class="form-control children_marzine children'+item_id+item_key+' children_mar_each'+item_id+'" style="">';
 
     table_row_qty = '<input style="margin:5px 0px 0px 0px;" type="number" min="0" onchange="check_not_shipped(this,'+item_id+');" data-quantity name="newItemschildren['+item_id+'][' + item_key + '][qty]" value="" class="form-control children_qty'+item_id+' children'+item_id+item_key+'">';
 
@@ -8152,9 +8158,9 @@ function add_item_in_tx_to_preview(id) {
         var html = '';
         $.each(response, function(index, value){
             html += '<tr class="main del'+value.id+'">';
-            html += '<td></td>';
+            html += '<td><input name="add_new['+index+'][in_tx_id]" value="'+value.id+'" type="checkbox" class="form-control"/></td>';
             html += '<input type="hidden" name="add_new['+index+'][item_id]" class="form-control item_id'+value.id+'" value="'+value.item_id+'">';
-            html += '<input type="hidden" name="add_new['+index+'][in_tx_id]" class="form-control in_tx_id'+value.id+'" value="'+value.id+'">';
+            // html += '<input type="hidden" name="add_new['+index+'][in_tx_id]" class="form-control in_tx_id'+value.id+'" value="'+value.id+'">';
             html += '<input type="hidden" class="form-control hidden_qty'+value.id+'" value="'+value.qty+'">';
             html += '<td><input type="text" name="add_new['+index+'][po_no]" class="form-control po_no'+value.id+'" disabled="disabled" value="'+value.po_no+'"></td>';
             html += '<td><input type="text" name="add_new['+index+'][marzoni]" class="form-control marzoni'+value.id+'" disabled="disabled" value="'+value.marzoni+'"></td>';
@@ -8198,5 +8204,19 @@ function check_qty(row, id)
         alert('qty less than or equal In QTY')
     }
 }
+
+var i=0;
+//全选
+$("#selectAll").on("click",function(){
+    if(i==0){
+        //把所有复选框选中
+        $("#tab td :checkbox").prop("checked", true);
+        i=1;
+    }else{
+        $("#tab td :checkbox").prop("checked", false);
+        i=0;
+    }
+
+});
 
 

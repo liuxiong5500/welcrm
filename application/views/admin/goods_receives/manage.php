@@ -19,10 +19,10 @@
                                 <?php
                                 $table_data = array();
                                 $_table_data = array(
-                                    _l('goods_receives_po_no'),
-//                                    _l('goods_receives_batch_no'),
-//                                    _l('goods_receives_in_qty'),
-//                                    _l('warehouse'),
+//                                    _l('goods_receives_po_no'),
+                                    _l('goods_receives'),
+                                    _l('goods_receives_date'),
+                                    _l('goods_receives_supplier'),
 //                                    _l('purchase_order_proposal_estimate_number'),
 //                                    _l('purchase_order_date'),
 //                                    _l('currency'),
@@ -49,7 +49,7 @@
 <?php init_tail(); ?>
 <script>
     $(function () {
-        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [0], [0]);
+        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [2], [2]);
     });
 </script>
 </body>

@@ -4158,3 +4158,5 @@ $lang['goods_receives_in'] = 'In';
 $lang['goods_receives_out'] = 'Out';
 $lang['goods_receives_reference_no'] = 'ReferenceNo';
 $lang['goods_receives_ware_house'] = 'Warehouse';
+$lang['goods_receives_date'] = 'Date';
+$lang['goods_receives_supplier'] = 'Supplier';

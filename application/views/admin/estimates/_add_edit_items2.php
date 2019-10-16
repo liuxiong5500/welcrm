@@ -79,7 +79,7 @@
             <tr class="main">
                 <td></td>
                 <td>
-                    <input type="number" name="marzoni" min="0" class="form-control"
+                    <input type="text" name="marzoni" class="form-control"
                            placeholder="<?php echo _l('purchase_order_marzoni'); ?>">
                 </td>
                 <td>
@@ -206,7 +206,7 @@
                     if (!empty($item['children'])) {
                         $readonly = 'readonly="readonly"';
                     }
-                    $table_row .= '<td class="bold"><input type="number" '.$readonly.' name="' . $items_indicator . '[' . $i . '][marzoni]" min="0" value="' . $item['marzoni'] . '" data-toggle="tooltip" title="' . $item['marzoni'] . '" class="form-control marzoni">';
+                    $table_row .= '<td class="bold"><input type="text" '.$readonly.' name="' . $items_indicator . '[' . $i . '][marzoni]" value="' . $item['marzoni'] . '" data-toggle="tooltip" title="' . $item['marzoni'] . '" class="form-control marzoni">';
 
                     if (!empty($item['children'])) {
                         foreach ($item['children'] as $k => $v) {
