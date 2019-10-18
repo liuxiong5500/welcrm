@@ -33,5 +33,22 @@ class Items_in_tx_detail_model extends CRM_Model
         return true;
     }
 
+    public function get_goods_receive_detail($id = '', $where = [])
+    {
+        $this->db->select(['tblitems_in_tx_detail.*', 'tblitems_in.rel_id as rel_id', 'tblitems_in_tx.marzoni as tx_marzoni', 'tblitems_in_tx.qty as tx_qty', 'tblcustomerwarehouses.name as house_name']);
+        $this->db->from('tblitems_in_tx_detail');
+        $this->db->join('tblitems_in_tx', 'tblitems_in_tx.id = tblitems_in_tx_detail.in_tx_id', 'left');
+        $this->db->join('tblitems_in', 'tblitems_in.id = tblitems_in_tx_detail.item_id', 'left');
+        $this->db->join('tblcustomerwarehouses', 'tblcustomerwarehouses.id = tblitems_in_tx_detail.ware_house', 'left');
+        $this->db->where('tblitems_in_tx_detail.peference_no', $id);
+        if (is_numeric($id)) {
+
+            $purchase_order = $this->db->get()->row();
+
+            return $purchase_order;
+        }
+        return $this->db->get()->result_array();
+    }
+
 
 }
