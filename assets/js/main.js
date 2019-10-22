@@ -7983,6 +7983,7 @@ function add_item(that, item_id, type = null)
     var ex_mill_val = false;
     var eta_date_val = false;
     var mar_each_val = false;
+    var mar_length = 0;
 
     var marzoni = $(that).parent('td').siblings('.bold').find('.marzoni').val();
 
@@ -7996,7 +7997,10 @@ function add_item(that, item_id, type = null)
         mar_id = $(this).val().split('-');
         mar[key] = mar_id[mar_id.length - 1];
     })
-    mar_id = parseInt(Math.max.apply(null, mar)) + 1;
+    if (mar.length != 0) {
+        mar_length = Math.max.apply(null, mar)
+    }
+    mar_id = parseInt(mar_length) + 1;
 
     if (mar_each_val) {
         alert('mar_each is unique');return false;

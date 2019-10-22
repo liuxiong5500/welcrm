@@ -47,13 +47,21 @@ class Goods_receives extends Admin_controller
 
     public function view($number)
     {
+        $newData = [];
         if (!$number) {
             redirect(admin_url('goods_receives'));
         }
 //        $order = $this->purchase_orders_model->get_goods_receive_detail($number);
         $order = $this->items_in_tx_detail_model->get_goods_receive_detail($number);
-        $data['order'] = $order;
-        print_r($order);die;
+        foreach ($order as $v) {
+            $newData[$v['rel_id']][] = $v;
+        }
+
+//        foreach ($newData as $k => &$v) {
+//            array_unshift($v,$v[0]);
+//        }
+//        print_r($newData);die;
+        $data['order'] = $newData;
         $data['title'] = _l('goods_receive');
 //        print_r($data);die;
         $this->load->view('admin/goods_receives/view', $data);

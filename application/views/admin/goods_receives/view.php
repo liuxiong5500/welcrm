@@ -55,57 +55,19 @@
                 </thead>
                 <tbody>
                 <?php foreach ($order as $item) { ?>
+                    <?php for ($i = 0;$i <= 1;$i ++) {?>
                     <tr>
-                        <td><?php echo 1; ?></td>
-                        <td><?php echo 1; ?></td>
-                        <td><?php echo $item['tx_marzoni']; ?></td>
-                        <td><?php echo $item['qty']; ?></td>
-                        <td><?php echo $item['qty']; ?></td>
-                        <td><?php echo $item['qty'];?></td>
-                        <td><?php echo $item['peference_no']; ?></td>
-                        <td><?php echo $item['house_name']; ?></td>
-<!--                        <td>--><?php //echo $item['style']; ?><!--</td>-->
-<!--                        <td>--><?php //echo $item['unit_price']; ?><!--</td>-->
-<!--                        <td>-->
-<!--                            --><?php //echo $item['qty'] * $item['unit_price']; ?>
-<!--                            --><?php //if (isset($item['children'])) { ?>
-<!--                            <div>&nbsp;</div>-->
-<!--                            --><?php //foreach ($item['children'] as $v) {?>
-<!--                            <div>--><?php //echo $v['marzoni']?><!--</div>-->
-<!--                            --><?php //}?>
-<!--                            --><?php //}?>
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            --><?php //echo $item['qty']; ?>
-<!--                            --><?php //if (isset($item['children'])) { ?>
-<!--                            <div>&nbsp;</div>-->
-<!--                            --><?php //foreach ($item['children'] as $v) {?>
-<!--                            <div>--><?php //echo $v['qty']?><!--</div>-->
-<!--                            --><?php //}?>
-<!--                            --><?php //}?>
-<!--                        </td>-->
-<!--                        <td>--><?php //echo $item['not_shipped']; ?><!--</td>-->
-<!--                        <td>-->
-<!--                            --><?php //echo $item['ex_mill']; ?>
-<!--                            --><?php //if (isset($item['children'])) { ?>
-<!--                            <div>&nbsp;</div>-->
-<!--                            --><?php //foreach ($item['children'] as $v) {?>
-<!--                            <div>--><?php //echo $v['ex_mill']?><!--</div>-->
-<!--                            --><?php //}?>
-<!--                            --><?php //}?>
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            --><?php //echo $item['eta_date']; ?>
-<!--                            --><?php //if (isset($item['children'])) { ?>
-<!--                            <div>&nbsp;</div>-->
-<!--                            --><?php //foreach ($item['children'] as $v) {?>
-<!--                            <div>--><?php //echo $v['eta_date']?><!--</div>-->
-<!--                            --><?php //}?>
-<!--                            --><?php //}?>
-<!--                        </td>-->
+                        <td><?php echo get_po_no_by_item_id($item[$i]['item_id']) ?></td>
+                        <td><?php echo $i + 1; ?></td>
+                        <td><?php echo $item[$i]['tx_marzoni']; ?></td>
+                        <td><?php if ($i == 0) {echo $item[$i]['tx_qty'];} ?></td>
+                        <td><?php if ($item[$i]['type'] == 1 && $i != 0) {echo $item[$i]['qty'];} ?></td>
+                        <td><?php if ($item[$i]['type'] == 2 && $i != 0) {echo $item[$i]['qty'];} ?></td>
+                        <td><?php echo $item[$i]['reference_no']; ?></td>
+                        <td><?php if ($i != 0) {echo $item[$i]['house_name'];} ?></td>
                     </tr>
                     <?php } ?>
-
+                <?php }?>
                 </tbody>
             </table>
         </div>

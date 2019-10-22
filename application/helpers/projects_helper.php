@@ -275,6 +275,17 @@ function get_house_name_by_id($id)
     return $shipment_term->name;
 }
 
+function get_po_no_by_item_id($id)
+{
+    $CI = &get_instance();
+    if (!class_exists('tblitems_in')) {
+        $CI->load->model('items_in_model');
+    }
+    $shipment_term = $CI->items_in_model->get($id);
+
+    return $shipment_term->order_number;
+}
+
 /**
  * Return logged in user pinned projects
  * @return array

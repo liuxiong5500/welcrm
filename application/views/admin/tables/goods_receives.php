@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $this->ci->load->model('items_in_tx_detail_model');
 
 $aColumns = [
-    'peference_no',
+    'reference_no',
     'gr_date',
     'suppliers.company as supplier_company',
 ];
@@ -22,14 +22,13 @@ $join = [
 $result = data_tables_init($aColumns, $sIndexColumn, $sTable, $join, $where, []);
 
 $result['rResult'] = array_values(array_unique($result['rResult'], SORT_REGULAR));
-
 $output = $result['output'];
 $rResult = $result['rResult'];
 
 foreach ($rResult as $aRow) {
     $row = [];
-    $url = admin_url('goods_receives/view/' . $aRow['peference_no']);
-    $order_number = '<a href="' . $url . '">' . $aRow['peference_no'] . '</a>';
+    $url = admin_url('goods_receives/view/' . $aRow['reference_no']);
+    $order_number = '<a href="' . $url . '">' . $aRow['reference_no'] . '</a>';
 //    $order_number .= '<div class="row-options">';
 ////    if ($aRow['status'] == 1) {
 ////        $order_number .= '<a href="' . admin_url('purchase_orders/approve/' . $aRow['id']) . '">' . _l('approve') . '</a> | ';

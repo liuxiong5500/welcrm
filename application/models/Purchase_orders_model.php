@@ -488,6 +488,9 @@ class Purchase_orders_model extends CRM_Model
             $this->db->delete('tblcustomfieldsvalues');
 
             $this->db->where('item_id IN (SELECT id from tblitems_in WHERE rel_id="' . $id . '")');
+            $this->db->delete('tblitems_in_tx_detail');
+
+            $this->db->where('item_id IN (SELECT id from tblitems_in WHERE rel_id="' . $id . '")');
             $this->db->delete('tblitems_in_tx');
 
             $this->db->where('rel_id', $id);
