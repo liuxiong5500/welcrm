@@ -60,12 +60,12 @@
                 <?php foreach ($children['detail'] as $key => $detail) { ?>
                     <tr>
                         <td><?php echo $order->order_number; ?></td>
-                        <td><?php echo 1; ?></td>
+                        <td><?php echo $key + 1; ?></td>
                         <td><?php echo $children['marzoni']; ?></td>
                         <td><?php if ($key == 0) { echo $children['qty']; } else { echo '';} ?></td>
                         <td><?php if ($detail['type'] == 1) {echo $detail['qty'];} else { echo '';} ?></td>
                         <td><?php if ($detail['type'] == 2) {echo $detail['qty'];} else { echo '';}?></td>
-                        <td><?php if ($key != 0) {echo $detail['peference_no'];} else { echo '';} ?></td>
+                        <td><?php if ($key != 0) {echo $detail['reference_no'];} else { echo '';} ?></td>
                         <td><?php if ($key != 0) {echo get_house_name_by_id($detail['ware_house']);} else { echo '';} ?></td>
 <!--                        <td>--><?php //echo $item['style']; ?><!--</td>-->
 <!--                        <td>--><?php //echo $item['unit_price']; ?><!--</td>-->

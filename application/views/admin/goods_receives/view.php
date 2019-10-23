@@ -55,16 +55,16 @@
                 </thead>
                 <tbody>
                 <?php foreach ($order as $item) { ?>
-                    <?php for ($i = 0;$i <= 1;$i ++) {?>
+                    <?php foreach ($item as $k => $v) {?>
                     <tr>
-                        <td><?php echo get_po_no_by_item_id($item[$i]['item_id']) ?></td>
-                        <td><?php echo $i + 1; ?></td>
-                        <td><?php echo $item[$i]['tx_marzoni']; ?></td>
-                        <td><?php if ($i == 0) {echo $item[$i]['tx_qty'];} ?></td>
-                        <td><?php if ($item[$i]['type'] == 1 && $i != 0) {echo $item[$i]['qty'];} ?></td>
-                        <td><?php if ($item[$i]['type'] == 2 && $i != 0) {echo $item[$i]['qty'];} ?></td>
-                        <td><?php echo $item[$i]['reference_no']; ?></td>
-                        <td><?php if ($i != 0) {echo $item[$i]['house_name'];} ?></td>
+                        <td><a href='/admin/goods_receives/view1/<?php echo $v['rel_id']?>'><?php echo get_po_no_by_item_id($v['item_id']) ?></a></td>
+                        <td><?php echo 1; ?></td>
+                        <td><?php echo $v['tx_marzoni']; ?></td>
+                        <td><?php echo $v['tx_qty']; ?></td>
+                        <td><?php if ($v['type'] == 1) {echo $v['qty'];} ?></td>
+                        <td><?php if ($v['type'] == 2) {echo $v['qty'];} ?></td>
+                        <td><?php echo $v['reference_no']; ?></td>
+                        <td><?php echo $v['house_name']; ?></td>
                     </tr>
                     <?php } ?>
                 <?php }?>

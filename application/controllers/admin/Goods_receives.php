@@ -14,15 +14,30 @@ class Goods_receives extends Admin_controller
     {
         $this->load->view('admin/goods_receives/manage');
     }
-    public function goods()
+    public function goods($id = '')
     {
         if ($this->input->post()) {
             $purchase_order_data = $this->input->post();
-            $id = $this->items_in_tx_detail_model->add($purchase_order_data);
-            if ($id) {
-                set_alert('success', _l('added_successfully', _l('goods_receive')));
+            if ($id == '') {
+                $id = $this->items_in_tx_detail_model->add($purchase_order_data);
+                if ($id) {
+                    set_alert('success', _l('added_successfully', _l('goods_receive')));
+                }
+            } else {
+                $success = $this->items_in_tx_detail_model->update($purchase_order_data, $id);
+                if ($success) {
+                    set_alert('success', _l('updated_successfully', _l('purchase_order')));
+                }
             }
+
             redirect(admin_url('goods_receives'));
+        }
+
+        if ($id != '') {
+            $goods_detail = $this->items_in_tx_model->get($id);
+print_r($goods_detail);die;
+            $data['goods_detail'] = $goods_detail;
+            $data['edit'] = true;
         }
 
         $data['suppliers'] = $this->suppliers_model->get();
@@ -63,8 +78,20 @@ class Goods_receives extends Admin_controller
 //        print_r($newData);die;
         $data['order'] = $newData;
         $data['title'] = _l('goods_receive');
-//        print_r($data);die;
+
         $this->load->view('admin/goods_receives/view', $data);
+    }
+
+    public function view1($number)
+    {
+        if (!$number) {
+            redirect(admin_url('goods_receives'));
+        }
+        $order = $this->purchase_orders_model->get_goods_receive_detail($number);
+        $data['order'] = $order;
+        $data['title'] = _l('goods_receive');
+
+        $this->load->view('admin/goods_receives/view1', $data);
     }
 
 }
