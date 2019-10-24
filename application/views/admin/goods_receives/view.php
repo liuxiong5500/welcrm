@@ -49,7 +49,7 @@
                 <th><?php echo _l('goods_receives_batch_no'); ?></th>
                 <th><?php echo _l('purchase_order_qty'); ?></th>
                 <th><?php echo _l('goods_receives_in'); ?></th>
-                <th><?php echo _l('goods_receives_out'); ?></th>
+<!--                <th>--><?php //echo _l('goods_receives_out'); ?><!--</th>-->
                 <th><?php echo _l('goods_receives_reference_no'); ?></th>
                 <th><?php echo _l('goods_receives_ware_house'); ?></th>
                 </thead>
@@ -62,7 +62,7 @@
                         <td><?php echo $v['tx_marzoni']; ?></td>
                         <td><?php echo $v['tx_qty']; ?></td>
                         <td><?php if ($v['type'] == 1) {echo $v['qty'];} ?></td>
-                        <td><?php if ($v['type'] == 2) {echo $v['qty'];} ?></td>
+<!--                        <td>--><?php //if ($v['type'] == 2) {echo $v['qty'];} ?><!--</td>-->
                         <td><?php echo $v['reference_no']; ?></td>
                         <td><?php echo $v['house_name']; ?></td>
                     </tr>

@@ -242,7 +242,7 @@ function get_supplier_name_by_id($id)
         $CI->load->model('suppliers_model');
     }
     $supplier = $CI->suppliers_model->get($id);
-    return $supplier->company;
+    return isset($supplier->company) ? $supplier->company : '';
 }
 
 function get_purchase_order_item_finished($id)
@@ -285,6 +285,18 @@ function get_po_no_by_item_id($id)
 
     return $shipment_term->order_number;
 }
+
+function get_po_no_by_id($id)
+{
+    $CI = &get_instance();
+    if (!class_exists('tblpurchaseorders')) {
+        $CI->load->model('purchase_orders_model');
+    }
+    $shipment_term = $CI->purchase_orders_model->get($id);
+
+    return $shipment_term->order_number;
+}
+
 
 /**
  * Return logged in user pinned projects

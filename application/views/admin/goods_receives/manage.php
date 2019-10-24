@@ -19,23 +19,17 @@
                                 <?php
                                 $table_data = array();
                                 $_table_data = array(
-//                                    _l('goods_receives_po_no'),
                                     _l('goods_receives'),
                                     _l('goods_receives_date'),
                                     _l('goods_receives_supplier'),
-//                                    _l('purchase_order_proposal_estimate_number'),
-//                                    _l('purchase_order_date'),
-//                                    _l('currency'),
-//                                    _l('purchase_order_currency_rate'),
-//                                    _l('purchase_order_status'),
-//                                    _l('total'),
-//                                    _l('created_at'),
+                                    _l('goods_is_approved'),
+                                    _l('goods_prepared_by'),
+                                    _l('goods_approved_by'),
                                 );
 
                                 foreach ($_table_data as $_t) {
                                     array_push($table_data, $_t);
                                 }
-
                                 render_datatable($table_data, 'goods-receives');
                                 ?>
                             </div>
@@ -49,7 +43,7 @@
 <?php init_tail(); ?>
 <script>
     $(function () {
-        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [2], [2]);
+        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [4], [4]);
     });
 </script>
 </body>

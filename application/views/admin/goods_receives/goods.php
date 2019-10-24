@@ -8,7 +8,11 @@
                         <div class="row">
                             <div class="col-md-6 border-right">
                                 <?php $value = (isset($estimate) ? $estimate->order_number : ''); $gr_number = isset($goods_detail[0]['reference_no']) ? $goods_detail[0]['reference_no'] : 'GR'.date('Ymd').mt_rand(1000, 9999)?>
-                                <?php echo render_input('peference_no', 'goods_gr_number', $gr_number, 'text'); ?>
+<!--                                --><?php //echo render_input('peference_no', 'goods_gr_number', $gr_number, 'text'); ?>
+                                <div class="form-group" app-field-wrapper="peference_no">
+                                    <label for="peference_no" class="control-label"><?php echo _l('goods_gr_number'); ?></label>
+                                    <input type="text" id="peference_no" name="peference_no" class="form-control" value="<?php echo $gr_number?>" readonly="readonly">
+                                </div>
                                 <?php
 
                                 $selected = '';
@@ -22,8 +26,15 @@
                                 }
                                 ?>
                                 <?php
-                                echo render_select('supplier', $suppliers, array('id', 'company'), 'purchase_order_supplier', $selected, do_action('purchase_order_supplier_disabled', $s_attrs));
-                                ?>
+                                if (!isset($goods_detail[0]['supplier'])) {
+                                    echo render_select('supplier', $suppliers, array('id', 'company'), 'purchase_order_supplier', $selected, do_action('purchase_order_supplier_disabled', $s_attrs));
+                                } else {?>
+                                <div class="form-group" app-field-wrapper="peference_no">
+                                    <label for="peference_no" class="control-label"><?php echo _l('purchase_order_supplier'); ?></label>
+                                    <input type="text" id="" name="" class="form-control" value="<?php echo get_supplier_name_by_id($goods_detail[0]['supplier'])?>" readonly="readonly">
+                                    <input type="hidden" id="" name="supplier" class="form-control" value="<?php echo $goods_detail[0]['supplier']?>">
+                                </div>
+                                <?php }?>
                             </div>
                             <div class="col-md-6">
 <!--                                <div class="form-group select-placeholder warehouses-wrapper">-->
@@ -44,20 +55,31 @@
 <!--                                    </div>-->
 <!--                                </div>-->
                                 <?php
-                                $house_selected = '';
-                                $s_attrs = array('data-show-subtext' => true);
-                                foreach ($warehouse as $supplier) {
-                                    if (isset($goods_detail)) {
-                                        if ($supplier['id'] == $goods_detail[0]['ware_house']) {
-                                            $house_selected = $supplier['id'];
+                                if ($goods_detail[0]['is_approve'] == 1) {
+                                    $house_selected = '';
+                                    $s_attrs = array('data-show-subtext' => true);
+                                    foreach ($warehouse as $supplier) {
+                                        if (isset($goods_detail)) {
+                                            if ($supplier['id'] == $goods_detail[0]['ware_house']) {
+                                                $house_selected = $supplier['id'];
+                                            }
                                         }
                                     }
-                                }
 
-                                echo render_select('ware_house', $warehouse, array('id', 'name'), 'purchase_order_warehouse', $house_selected, do_action('purchase_order_warehouse_disabled', $s_attrs));
-                                ?>
-                                <?php $value = (isset($goods_detail) ? _d(date('Y-m-d', strtotime($goods_detail[0]['gr_date']))) : _d(date('Y-m-d'))); ?>
-                                <?php echo render_date_input('gr_date', 'goods_gr_date', $value); ?>
+                                    echo render_select('ware_house', $warehouse, array('id', 'name'), 'purchase_order_warehouse', $house_selected, do_action('purchase_order_warehouse_disabled', $s_attrs));
+                                    $value = (isset($goods_detail) ? _d(date('Y-m-d', strtotime($goods_detail[0]['gr_date']))) : _d(date('Y-m-d')));
+                                    echo render_date_input('gr_date', 'goods_gr_date', $value);
+                                } else {?>
+                                    <div class="form-group" app-field-wrapper="peference_no">
+                                        <label for="peference_no" class="control-label"><?php echo _l('purchase_order_warehouse'); ?></label>
+                                        <input type="text" id="" name="" class="form-control" value="<?php echo get_house_name_by_id($goods_detail[0]['ware_house'])?>" readonly="readonly">
+                                        <input type="hidden" id="" name="ware_house" class="form-control" value="<?php echo $goods_detail[0]['ware_house']?>">
+                                    </div>
+                                    <div class="form-group" app-field-wrapper="peference_no">
+                                        <label for="peference_no" class="control-label"><?php echo _l('goods_gr_date'); ?></label>
+                                        <input type="text" id="" name="" class="form-control" value="<?php echo $goods_detail[0]['gr_date']?>" readonly="readonly">
+                                    </div>
+                                <?php }?>
                             </div>
                         </div>
                         <div class="btn-bottom-toolbar bottom-transaction text-right">
@@ -76,7 +98,7 @@
 <!--            style="display:none;"-->
             <div class="col-md-12 table_goods">
                 <div class="panel_s">
-<!--                    --><?php //$this->load->view('admin/goods_receives/items_in_tx', ['type' => 'purchase-order']); ?>
+                <?php if (isset($goods_detail)) {?>
                     <div class="panel-body mtop10">
                         <div class="table-responsive s_table">
                             <table class="table estimate-items-table items table-main-estimate-edit no-mtop" id="tab">
@@ -95,22 +117,31 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table_goods_detail">
-                                <?php foreach ($goods_detail as $k => $v) {?>
-                                <tr class="main del'+value.id+'">
-                                    <td><input name="add_new[<?php echo $k?>][in_tx_id]" value="<?php echo $v['id']?>" type="checkbox" class="form-control"/></td>
-                                    <input type="hidden" name="add_new[<?php echo $k?>][item_id]" class="form-control item_id<?php echo $v['id']?>" value="<?php echo $v['item_id']?>">
-                                    <input type="hidden" class="form-control hidden_qty<?php echo $v['id']?>" value="<?php echo $v['qty']?>">
-                                    <td><input type="text" name="add_new[<?php echo $k?>][po_no]" class="form-control po_no<?php echo $v['id']?>" disabled="disabled" value="'+value.po_no+'"></td>
-                                    <td><input type="text" name="add_new[<?php echo $k?>][marzoni]" class="form-control marzoni<?php echo $v['id']?>" disabled="disabled" value="'+value.marzoni+'"></td>
-                                    <td><input type="text" name="add_new[<?php echo $k?>][qty]" class="form-control qty<?php echo $v['id']?>" value="<?php echo $v['qty']?>" onchange="check_qty(this,<?php echo $v['id']?>)"></td>
-                                    <td><a href="#" class="btn btn-danger pull-left" onclick="delete_goods(this,<?php echo $v['id']?>); return false;"><i class="fa fa-times"></i></a></td>
-                                </tr>
-                                <?php }?>
+                                <?php foreach ($goods_detail as $k => $v) { ?>
+                                        <tr class="main del'+value.id+'">
+                                            <td>
+                                                <input name="add_new[<?php echo $k ?>][in_tx_id]" value="<?php echo $v['id'] ?>" type="checkbox" class="form-control"/>
+                                            </td>
+                                            <input type="hidden" name="add_new[<?php echo $k ?>][item_id]" class="form-control item_id<?php echo $v['id'] ?>" value="<?php echo $v['item_id'] ?>">
+                                            <input type="hidden" class="form-control hidden_qty<?php echo $v['id'] ?>" value="<?php echo $v['tx_qty'] ?>">
+                                            <td>
+                                                <input type="text" name="add_new[<?php echo $k ?>][po_no]" class="form-control po_no<?php echo $v['id'] ?>" disabled="disabled" value="<?php echo get_po_no_by_id($v['rel_id'])?>">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="add_new[<?php echo $k ?>][marzoni]" class="form-control marzoni<?php echo $v['id'] ?>" disabled="disabled" value="<?php echo $v['tx_marzoni']?>">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="add_new[<?php echo $k ?>][qty]" class="form-control qty<?php echo $v['id'] ?>" value="<?php echo $v['qty'] ?>" onchange="check_qty(this,<?php echo $v['id'] ?>)">
+                                            </td>
+                                        </tr>
+                                    <?php }?>
                                 </tbody>
-
                             </table>
                         </div>
                     </div>
+                    <?php } else {
+                    $this->load->view('admin/goods_receives/items_in_tx', ['type' => 'purchase-order']);
+                }?>
                 </div>
             </div>
             <?php echo form_close(); ?>

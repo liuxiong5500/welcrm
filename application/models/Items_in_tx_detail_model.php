@@ -36,7 +36,7 @@ class Items_in_tx_detail_model extends CRM_Model
     public function update($data, $id)
     {
         $addData = [];
-
+        $this->db->where('reference_no', $id)->delete('tblitems_in_tx_detail');
         if (isset($data['add_new']) && !empty($data['add_new'])) {
             foreach ($data['add_new'] as $k => $v) {
                 if (!isset($v['in_tx_id'])) {
@@ -51,7 +51,7 @@ class Items_in_tx_detail_model extends CRM_Model
                 $addData['gr_date'] = $data['gr_date'];
                 $addData['prepared_by'] = get_staff_user_id();
                 $addData['supplier'] = $data['supplier'];
-                $this->db->where('reference_no', $id)->update('tblitems_in_tx_detail', $addData);
+                $this->db->insert('tblitems_in_tx_detail', $addData);
             }
         }
 
@@ -82,6 +82,20 @@ class Items_in_tx_detail_model extends CRM_Model
         $this->db->from('tblitems_in_tx_detail');
         $this->db->where('tblitems_in_tx_detail.reference_no', $id);
         return $this->db->get()->result_array();
+    }
+
+    public function approve($poNumber)
+    {
+        $addData['is_approve'] = 2;
+        $addData['approved_by'] = get_staff_user_id();
+        $this->db->where('reference_no', $poNumber)->update('tblitems_in_tx_detail', $addData);
+    }
+
+    public function remove($poNumber)
+    {
+        $addData['is_approve'] = 1;
+        $addData['approved_by'] = 0;
+        $this->db->where('reference_no', $poNumber)->update('tblitems_in_tx_detail', $addData);
     }
 
 

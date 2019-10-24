@@ -34,8 +34,8 @@ class Goods_receives extends Admin_controller
         }
 
         if ($id != '') {
-            $goods_detail = $this->items_in_tx_model->get($id);
-print_r($goods_detail);die;
+            $goods_detail = $this->items_in_tx_detail_model->get_goods_receive_detail($id);
+
             $data['goods_detail'] = $goods_detail;
             $data['edit'] = true;
         }
@@ -92,6 +92,18 @@ print_r($goods_detail);die;
         $data['title'] = _l('goods_receive');
 
         $this->load->view('admin/goods_receives/view1', $data);
+    }
+
+    public function approve($poNumber)
+    {
+        $this->items_in_tx_detail_model->approve($poNumber);
+        redirect(admin_url('goods_receives'));
+    }
+
+    public function remove($poNumber)
+    {
+        $this->items_in_tx_detail_model->remove($poNumber);
+        redirect(admin_url('goods_receives'));
     }
 
 }
