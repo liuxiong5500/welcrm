@@ -8162,7 +8162,7 @@ function add_item_in_tx_to_preview(id) {
         var html = '';
         $.each(response, function(index, value){
             html += '<tr class="main del'+value.id+'">';
-            html += '<td><input name="add_new['+index+'][in_tx_id]" value="'+value.id+'" type="checkbox" class="form-control"/></td>';
+            html += '<td><div class="checkbox"><input name="add_new['+index+'][in_tx_id]" value="'+value.id+'" type="checkbox"/><label></label></div></td>';
             html += '<input type="hidden" name="add_new['+index+'][item_id]" class="form-control item_id'+value.id+'" value="'+value.item_id+'">';
             // html += '<input type="hidden" name="add_new['+index+'][in_tx_id]" class="form-control in_tx_id'+value.id+'" value="'+value.id+'">';
             html += '<input type="hidden" class="form-control hidden_qty'+value.id+'" value="'+value.qty+'">';

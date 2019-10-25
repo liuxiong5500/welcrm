@@ -118,7 +118,17 @@
                             <table class="table estimate-items-table items table-main-estimate-edit no-mtop" id="tab">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="selectAll" class="form-control"/>全选</th>
+                                    <th class="sorting_disabled not-export" rowspan="1" colspan="1" aria-label=" - ">
+                                        <span class="hide"> - </span>
+                                        <div class="checkbox mass_select_all_wrap">
+                                            <input type="checkbox" id="selectAll" data-to-table="tasks"><label></label>
+                                        </div>
+                                    </th>
+<!--                                    <th>-->
+<!--                                        <div class="checkbox">-->
+<!--                                            <input type="checkbox" id="selectAll"/>全选-->
+<!--                                        </div>-->
+<!--                                    </th>-->
                                     <th width="32%" align="center">
                                         <i class="fa fa-exclamation-circle" aria-hidden="true"
                                            data-toggle="tooltip"
@@ -134,7 +144,9 @@
                                 <?php foreach ($goods_detail as $k => $v) { ?>
                                         <tr class="main del<?php echo $v['id'] ?>">
                                             <td>
-                                                <input name="add_new[<?php echo $k ?>][in_tx_id]" value="<?php echo $v['in_tx_id'] ?>" type="checkbox" class="form-control"/>
+                                                <div class="checkbox">
+                                                    <input name="add_new[<?php echo $k ?>][in_tx_id]" value="<?php echo $v['in_tx_id'] ?>" type="checkbox"/><label></label>
+                                                </div>
                                             </td>
                                             <input type="hidden" name="add_new[<?php echo $k ?>][item_id]" class="form-control item_id<?php echo $v['id'] ?>" value="<?php echo $v['item_id'] ?>">
                                             <input type="hidden" class="form-control hidden_qty<?php echo $v['id'] ?>" value="<?php echo $v['surplus_qty'] ?>">

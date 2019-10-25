@@ -3,7 +3,12 @@
         <table class="table estimate-items-table items table-main-estimate-edit no-mtop" id="tab">
             <thead>
             <tr>
-                <th><input type="checkbox" id="selectAll" class="form-control"/>全选</th>
+                <th class="sorting_disabled not-export" rowspan="1" colspan="1" aria-label=" - ">
+                    <span class="hide"> - </span>
+                    <div class="checkbox mass_select_all_wrap">
+                        <input type="checkbox" id="selectAll" data-to-table="tasks"><label></label>
+                    </div>
+                </th>
                 <th width="32%" align="center">
                     <i class="fa fa-exclamation-circle" aria-hidden="true"
                        data-toggle="tooltip"
