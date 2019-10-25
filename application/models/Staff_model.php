@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Staff_model extends CRM_Model
 {
-    private $perm_statements = ['view', 'view_own', 'edit', 'create', 'delete'];
+    private $perm_statements = ['view', 'view_own', 'edit', 'create', 'delete', 'approve'];
 
     public function __construct()
     {
@@ -346,15 +346,15 @@ class Staff_model extends CRM_Model
 
     public function get_staff_permissions($id)
     {
-        $permissions = $this->object_cache->get('staff-' . $id . '-permissions');
+//        $permissions = $this->object_cache->get('staff-' . $id . '-permissions');
 
-        if (!$permissions && !is_array($permissions)) {
+//        if (!$permissions && !is_array($permissions)) {
             $this->db->select('tblstaffpermissions.*,tblpermissions.shortname as permission_name');
             $this->db->join('tblpermissions', 'tblpermissions.permissionid = tblstaffpermissions.permissionid');
             $this->db->where('staffid', $id);
             $permissions = $this->db->get('tblstaffpermissions')->result();
             $this->object_cache->add('staff-' . $id . '-permissions', $permissions);
-        }
+//        }
 
         return $permissions;
     }
@@ -603,6 +603,10 @@ class Staff_model extends CRM_Model
         if (isset($data['delete'])) {
             $permissions['delete'] = $data['delete'];
             unset($data['delete']);
+        }
+        if (isset($data['approve'])) {
+            $permissions['approve'] = $data['approve'];
+            unset($data['approve']);
         }
         if (isset($data['custom_fields'])) {
             $custom_fields = $data['custom_fields'];

@@ -36,6 +36,13 @@ class Goods_receives extends Admin_controller
         if ($id != '') {
             $goods_detail = $this->items_in_tx_detail_model->get_goods_receive_detail($id);
 
+            foreach ($goods_detail as &$v) {
+                $detail = $this->items_in_tx_model->get_sum_qty($v['id'], $v['in_tx_id']);
+                $in_tx = $this->items_in_tx_model->get_qty_by_id($v['in_tx_id']);
+                $tqy = empty($detail->qty) ? 0 : $detail->qty;
+                $v['surplus_qty'] = $in_tx->qty - $tqy;
+            }
+
             $data['goods_detail'] = $goods_detail;
             $data['edit'] = true;
         }
@@ -103,6 +110,12 @@ class Goods_receives extends Admin_controller
     public function remove($poNumber)
     {
         $this->items_in_tx_detail_model->remove($poNumber);
+        redirect(admin_url('goods_receives'));
+    }
+
+    public function delete($poNumber)
+    {
+        $this->items_in_tx_detail_model->delete($poNumber);
         redirect(admin_url('goods_receives'));
     }
 

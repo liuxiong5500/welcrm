@@ -54,5 +54,22 @@ class Items_in_tx_model extends CRM_Model
         return $this->db->get()->result_array();
     }
 
+    public function get_sum_qty($id, $in_tx_id)
+    {
+        $this->db->select_sum('qty');
+        $this->db->from('tblitems_in_tx_detail');
+
+        $this->db->where('in_tx_id', $in_tx_id);
+        $this->db->where('id!=', $id);
+        return $this->db->get()->row();
+    }
+
+    public function get_qty_by_id($id)
+    {
+        $this->db->select('qty');
+        $this->db->from('tblitems_in_tx');
+        $this->db->where('id', $id);
+        return $this->db->get()->row();
+    }
 
 }

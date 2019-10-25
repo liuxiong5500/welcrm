@@ -331,6 +331,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'leads' => [
             'view' => true,
@@ -341,6 +342,7 @@ function get_permission_conditions()
             'help' => _l('help_leads_permission_view'),
             'help_create' => _l('help_leads_create_permission'),
             'help_edit' => _l('help_leads_edit_permission'),
+            'approve' => false,
         ],
         'tasks' => [
             'view' => true,
@@ -349,6 +351,7 @@ function get_permission_conditions()
             'create' => true,
             'delete' => true,
             'help' => _l('help_tasks_permissions'),
+            'approve' => false,
         ],
         'checklist_templates' => [
             'view' => false,
@@ -356,6 +359,15 @@ function get_permission_conditions()
             'edit' => false,
             'create' => true,
             'delete' => true,
+            'approve' => false,
+        ],
+        'goods_received' => [
+            'view' => false,
+            'view_own' => false,
+            'edit' => false,
+            'create' => false,
+            'delete' => false,
+            'approve' => true,
         ],
         'reports' => [
             'view' => true,
@@ -363,6 +375,7 @@ function get_permission_conditions()
             'edit' => false,
             'create' => false,
             'delete' => false,
+            'approve' => false,
         ],
         'settings' => [
             'view' => true,
@@ -370,6 +383,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => false,
             'delete' => false,
+            'approve' => false,
         ],
         'projects' => [
             'view' => true,
@@ -378,6 +392,7 @@ function get_permission_conditions()
             'create' => true,
             'delete' => true,
             'help' => _l('help_project_permissions'),
+            'approve' => false,
         ],
         'opportunities' => [
             'view' => true,
@@ -386,6 +401,7 @@ function get_permission_conditions()
             'create' => true,
             'delete' => true,
             'help' => _l('help_opportunity_permissions'),
+            'approve' => false,
         ],
         'subscriptions' => [
             'view' => true,
@@ -393,6 +409,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'surveys' => [
             'view' => true,
@@ -400,6 +417,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'staff' => [
             'view' => true,
@@ -407,6 +425,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'customers' => [
             'view' => true,
@@ -414,6 +433,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'email_templates' => [
             'view' => true,
@@ -421,6 +441,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => false,
             'delete' => false,
+            'approve' => false,
         ],
         'roles' => [
             'view' => true,
@@ -428,6 +449,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'expenses' => [
             'view' => true,
@@ -435,6 +457,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'bulk_pdf_exporter' => [
             'view' => true,
@@ -442,6 +465,7 @@ function get_permission_conditions()
             'edit' => false,
             'create' => false,
             'delete' => false,
+            'approve' => false,
         ],
         'goals' => [
             'view' => true,
@@ -449,6 +473,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'knowledge_base' => [
             'view' => true,
@@ -456,6 +481,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'proposals' => [
             'view' => true,
@@ -463,6 +489,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'estimates' => [
             'view' => true,
@@ -470,6 +497,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'payments' => [
             'view' => true,
@@ -477,6 +505,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'invoices' => [
             'view' => true,
@@ -484,6 +513,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'credit_notes' => [
             'view' => true,
@@ -491,6 +521,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
         'items' => [
             'view' => true,
@@ -498,6 +529,7 @@ function get_permission_conditions()
             'edit' => true,
             'create' => true,
             'delete' => true,
+            'approve' => false,
         ],
     ]);
 }

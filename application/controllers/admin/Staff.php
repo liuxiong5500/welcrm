@@ -102,7 +102,7 @@ class Staff extends Admin_controller
         $data['user_notes'] = $this->misc_model->get_notes($id, 'staff');
         $data['departments'] = $this->departments_model->get();
         $data['levels'] = $this->levels_model->get();
-
+//print_r($data);die;
         $data['title'] = $title;
         $this->load->view('admin/staff/member', $data);
     }

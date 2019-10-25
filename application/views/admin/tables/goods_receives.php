@@ -10,6 +10,7 @@ $aColumns = [
     'prepared_by',
     'is_approve',
     'approved_by',
+    'approved_date'
 ];
 $sIndexColumn = 'id';
 $sTable = 'tblitems_in_tx_detail';
@@ -37,9 +38,13 @@ foreach ($rResult as $aRow) {
     if ($aRow['is_approve'] == 1) {
         $order_number .= '<a href="' . admin_url('goods_receives/goods/' . $aRow['reference_no']) . '">' . _l('edit') . '</a>';
         $order_number .= ' | <a href="' . admin_url('goods_receives/delete/' . $aRow['reference_no']) . '">' . _l('delete') . '</a>';
-        $order_number .= ' | <a href="' . admin_url('goods_receives/approve/' . $aRow['reference_no']) . '">' . _l('approve') . '</a>';
+        if (has_permission('goods_received', '', 'approve')) {
+            $order_number .= ' | <a href="' . admin_url('goods_receives/approve/' . $aRow['reference_no']) . '">' . _l('approve') . '</a>';
+        }
     } else {
-        $order_number .= '<a href="' . admin_url('goods_receives/remove/' . $aRow['reference_no']) . '">' . _l('haha') . '</a>';
+        if (has_permission('goods_received', '', 'approve')) {
+            $order_number .= '<a href="' . admin_url('goods_receives/remove/' . $aRow['reference_no']) . '">' . _l('haha') . '</a>';
+        }
     }
 
     $order_number .= '</div>';
@@ -49,6 +54,7 @@ foreach ($rResult as $aRow) {
     $row[] = $aRow['is_approve'] == 2 ? 'Yes' : 'No';
     $row[] = get_staff_full_name($aRow['prepared_by']);
     $row[] = get_staff_full_name($aRow['approved_by']);
+    $row[] = $aRow['is_approve'] == 1 ? '' : $aRow['approved_date'];
 
 
     $hook = do_action('customers_table_row_data', [

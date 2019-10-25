@@ -25,6 +25,7 @@
                                     _l('goods_is_approved'),
                                     _l('goods_prepared_by'),
                                     _l('goods_approved_by'),
+                                    _l('goods_approved_date'),
                                 );
 
                                 foreach ($_table_data as $_t) {
@@ -43,7 +44,7 @@
 <?php init_tail(); ?>
 <script>
     $(function () {
-        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [4], [4]);
+        initDataTable('.table-goods-receives', admin_url + 'goods_receives/table', [5], [5]);
     });
 </script>
 </body>

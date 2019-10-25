@@ -55,7 +55,21 @@
 <!--                                    </div>-->
 <!--                                </div>-->
                                 <?php
-                                if ($goods_detail[0]['is_approve'] == 1) {
+                                if (!isset($goods_detail[0])) {
+                                    $house_selected = '';
+                                    $s_attrs = array('data-show-subtext' => true);
+                                    foreach ($warehouse as $supplier) {
+                                        if (isset($goods_detail)) {
+                                            if ($supplier['id'] == $goods_detail[0]['ware_house']) {
+                                                $house_selected = $supplier['id'];
+                                            }
+                                        }
+                                    }
+
+                                    echo render_select('ware_house', $warehouse, array('id', 'name'), 'purchase_order_warehouse', $house_selected, do_action('purchase_order_warehouse_disabled', $s_attrs));
+                                    $value = (isset($goods_detail) ? _d(date('Y-m-d', strtotime($goods_detail[0]['gr_date']))) : _d(date('Y-m-d')));
+                                    echo render_date_input('gr_date', 'goods_gr_date', $value);
+                                }elseif ($goods_detail[0]['is_approve'] == 1) {
                                     $house_selected = '';
                                     $s_attrs = array('data-show-subtext' => true);
                                     foreach ($warehouse as $supplier) {
@@ -118,12 +132,12 @@
                                 </thead>
                                 <tbody class="table_goods_detail">
                                 <?php foreach ($goods_detail as $k => $v) { ?>
-                                        <tr class="main del'+value.id+'">
+                                        <tr class="main del<?php echo $v['id'] ?>">
                                             <td>
-                                                <input name="add_new[<?php echo $k ?>][in_tx_id]" value="<?php echo $v['id'] ?>" type="checkbox" class="form-control"/>
+                                                <input name="add_new[<?php echo $k ?>][in_tx_id]" value="<?php echo $v['in_tx_id'] ?>" type="checkbox" class="form-control"/>
                                             </td>
                                             <input type="hidden" name="add_new[<?php echo $k ?>][item_id]" class="form-control item_id<?php echo $v['id'] ?>" value="<?php echo $v['item_id'] ?>">
-                                            <input type="hidden" class="form-control hidden_qty<?php echo $v['id'] ?>" value="<?php echo $v['tx_qty'] ?>">
+                                            <input type="hidden" class="form-control hidden_qty<?php echo $v['id'] ?>" value="<?php echo $v['surplus_qty'] ?>">
                                             <td>
                                                 <input type="text" name="add_new[<?php echo $k ?>][po_no]" class="form-control po_no<?php echo $v['id'] ?>" disabled="disabled" value="<?php echo get_po_no_by_id($v['rel_id'])?>">
                                             </td>
