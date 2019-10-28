@@ -43,7 +43,7 @@ foreach ($rResult as $aRow) {
         }
     } else {
         if (has_permission('goods_received', '', 'approve')) {
-            $order_number .= '<a href="' . admin_url('goods_receives/remove/' . $aRow['reference_no']) . '">' . _l('haha') . '</a>';
+            $order_number .= '<a href="' . admin_url('goods_receives/remove/' . $aRow['reference_no']) . '">' . _l('revert') . '</a>';
         }
     }
 
