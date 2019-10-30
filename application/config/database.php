@@ -79,7 +79,7 @@ $db['default'] = array(
 	'username' => APP_DB_USERNAME,
 	'password' => APP_DB_PASSWORD,
 	'database' => APP_DB_NAME,
-	'dbdriver' => defined('APP_DB_DRIVER') ? APP_DB_DRIVER : 'mysqli',
+	'dbdriver' => defined('APP_DB_DRIVER') ? APP_DB_DRIVER : 'mysql',
 	'dbprefix' => '', // Not Supported
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
