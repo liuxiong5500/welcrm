@@ -56,7 +56,7 @@ define('APP_ENC_KEY','506b01a9c6db27d82606d7181701c052');
 //define('APP_DB_NAME','hook');
 
 /* The hostname of your database server. */
-define('APP_DB_HOSTNAME','49.232.149.19');
+define('APP_DB_HOSTNAME','root');
 /* The username used to connect to the database */
 define('APP_DB_USERNAME','root');
 /* The password used to connect to the database */
