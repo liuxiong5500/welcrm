@@ -8207,6 +8207,7 @@ function check_qty(row, id)
         $(row).val(hidden_qty);
         alert('qty less than or equal In QTY')
     }
+    $(row).parent('td').siblings('td').find('.checkbox').find('input').attr('checked', 'checked')
 }
 
 var i=0;

@@ -38,25 +38,25 @@
             <thead>
             <tr>
                 <th></th>
-                <th width="12%" align="center">
+                <th width="6%" align="center" style="min-width : 40px">
                     <i class="fa fa-exclamation-circle" aria-hidden="true"
                        data-toggle="tooltip"
                        data-title="<?php echo _l('item_description_new_lines_notice'); ?>">
                     </i> <?php echo _l('purchase_order_marzoni'); ?>
                 </th>
-                <th width="5%" align="center"><?php echo _l('purchase_order_art'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_dis'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_col'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_composition'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_weight'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_width'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_color'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_style'); ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_unit_price'); ?></th>
+                <th width="6%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_art'); ?></th>
+                <th width="5%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_dis'); ?></th>
+                <th width="5%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_col'); ?></th>
+                <th width="8%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_composition'); ?></th>
+                <th width="6%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_weight'); ?></th>
+                <th width="6%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_width'); ?></th>
+                <th width="7%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_color'); ?></th>
+                <th width="7%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_style'); ?></th>
+                <th width="7%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_unit_price'); ?></th>
                 <?php
                 $custom_fields = get_custom_fields('items');
                 foreach ($custom_fields as $cf) {
-                    echo '<th width="15%" align="center" class="custom_field">' . $cf['name'] . '</th>';
+                    echo '<th width="15%" align="center" class="custom_field" style="min-width : 40px">' . $cf['name'] . '</th>';
                 }
 
                 $qty_heading = _l('estimate_table_quantity_heading');
@@ -66,12 +66,12 @@
                     $qty_heading = _l('estimate_table_quantity_heading') . '/' . _l('estimate_table_hours_heading');
                 }
                 ?>
-                <th width="2%" align="center"><?php echo _l('purchase_order_amount'); ?></th>
-                <th width="2%" class="qty" align="center"><?php echo $qty_heading; ?></th>
-                <th width="2%" align="center"><?php echo _l('purchase_order_not_shipped'); ?></th>
+                <th width="7%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_amount'); ?></th>
+                <th width="7%" class="qty" align="center" style="min-width : 40px"><?php echo $qty_heading; ?></th>
+                <th width="7%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_not_shipped'); ?></th>
 <!--                <th width="6%" align="center">--><?php //echo _l('estimate_table_tax_heading'); ?><!--</th>-->
-                <th width="12%" align="center"><?php echo _l('purchase_order_ex_mill'); ?></th>
-                <th width="12%" align="center"><?php echo _l('purchase_order_eta_date'); ?></th>
+                <th width="8%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_ex_mill'); ?></th>
+                <th width="8%" align="center" style="min-width : 40px"><?php echo _l('purchase_order_eta_date'); ?></th>
                 <th align="center"><i class="fa fa-cog"></i></th>
             </tr>
             </thead>
