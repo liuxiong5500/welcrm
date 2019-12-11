@@ -38,6 +38,7 @@
                                     <th class="text-center bold"><?php echo _l('permission_create'); ?></th>
                                     <th class="text-center bold"><?php echo _l('permission_edit'); ?></th>
                                     <th class="text-center text-danger bold"><?php echo _l('permission_delete'); ?></th>
+                                    <th class="text-center text-danger bold"><?php echo _l('permission_approve'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -148,6 +149,21 @@
                                                     </div>
                                                     <?php } ?>
                                                 </td>
+                                        <td class="text-center">
+                                            <?php if($permission_condition['approve'] == true){
+                                                $statement = '';
+                                                if(isset($role)){
+                                                    if(total_rows('tblrolepermissions',array('roleid'=>$role->roleid,'permissionid'=>$permission['permissionid'],'can_approve'=>1)) > 0){
+                                                        $statement = 'checked';
+                                                    }
+                                                }
+                                                ?>
+                                                <div class="checkbox checkbox-danger">
+                                                    <input type="checkbox" data-shortname="<?php echo $permission['shortname']; ?>" data-can-delete <?php echo $statement; ?> name="approve[]" value="<?php echo $permission['permissionid']; ?>">
+                                                    <label></label>
+                                                </div>
+                                            <?php } ?>
+                                        </td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>

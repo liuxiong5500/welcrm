@@ -794,6 +794,7 @@ class Staff_model extends CRM_Model
             }
         }
         $_permission_restore_affected_rows = 0;
+
         foreach ($all_permissions as $permission) {
             foreach ($this->perm_statements as $c) {
                 $this->db->where('staffid', $id);

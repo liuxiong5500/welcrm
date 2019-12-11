@@ -3687,6 +3687,7 @@ function init_roles_permissions(roleid, user_changed) {
                     row.find('[data-can-edit]').prop('checked', (obj.can_edit == 1 ? true : false));
                     row.find('[data-can-create]').prop('checked', (obj.can_create == 1 ? true : false));
                     row.find('[data-can-delete]').prop('checked', (obj.can_delete == 1 ? true : false));
+                    row.find('[data-can-approve]').prop('checked', (obj.can_approve == 1 ? true : false));
                 }
             });
         });

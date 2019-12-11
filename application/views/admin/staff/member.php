@@ -503,7 +503,7 @@
                                                         <div class="checkbox checkbox-danger">
                                                             <input type="checkbox"
                                                                    data-shortname="<?php echo $permission['shortname']; ?>"
-                                                                   data-can-delete <?php echo $statement; ?>
+                                                                   data-can-approve <?php echo $statement; ?>
                                                                    name="approve[]"
                                                                    value="<?php echo $permission['permissionid']; ?>">
                                                             <label></label>

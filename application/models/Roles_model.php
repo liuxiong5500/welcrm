@@ -108,6 +108,11 @@ class Roles_model extends CRM_Model
             $permissions['delete'] = $data['delete'];
             unset($data['delete']);
         }
+
+        if (isset($data['approve'])) {
+            $permissions['approve'] = $data['approve'];
+            unset($data['approve']);
+        }
         $update_staff_permissions = false;
         if (isset($data['update_staff_permissions'])) {
             $update_staff_permissions = true;
