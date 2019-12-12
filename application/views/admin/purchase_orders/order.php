@@ -8,7 +8,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-6 border-right">
-                                <?php $value = (isset($estimate) ? $estimate->order_number : ''); ?>
+                                <?php $value = (isset($estimate) ? $estimate->order_number : get_purchase_order_number()); ?>
                                 <?php echo render_input('order_number', 'purchase_order_number', $value, 'text'); ?>
                                 <?php
                                 if ($value) {

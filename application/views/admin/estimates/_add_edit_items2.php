@@ -77,7 +77,7 @@
             </thead>
             <tbody>
             <tr class="main">
-                <td></td>
+                <td><input type="hidden" name="item_id" class="form-control" ></td>
                 <td>
                     <input type="text" name="marzoni" class="form-control"
                            placeholder="<?php echo _l('purchase_order_marzoni'); ?>">
@@ -201,6 +201,7 @@
                     // order input
                     $table_row .= '<input type="hidden" class="order" name="' . $items_indicator . '[' . $i . '][order]">';
                     $table_row .= '<input type="hidden" class="not_shipped" value="' . $item['not_shipped']  . '">';
+                    $table_row .= '<input type="hidden" class="item_id" name="' . $items_indicator . '[' . $i . '][item_id]" value="' . $item['item_id'] . '">';
                     $table_row .= '</td>';
 
                     if (!empty($item['children'])) {

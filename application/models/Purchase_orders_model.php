@@ -112,6 +112,10 @@ class Purchase_orders_model extends CRM_Model
             unset($data['newItemschildren']);
         }
 
+        if (isset($data['item_id'])) {
+            unset($data['item_id']);
+        }
+
         if (isset($data['marzoni'])) {
             unset($data['marzoni']);
         }
@@ -175,6 +179,7 @@ class Purchase_orders_model extends CRM_Model
 
         $data = $hook_data['data'];
         $items = $hook_data['items'];
+        $data['year'] = date('Y');
 
         $this->db->insert('tblpurchaseorders', $data);
         $insert_id = $this->db->insert_id();
@@ -187,6 +192,7 @@ class Purchase_orders_model extends CRM_Model
                 if ($itemid = add_new_sales_item_post($item, $insert_id, 'purchase_order')) {
                     _maybe_insert_post_item_tax($itemid, $item, $insert_id, 'purchase_order');
                 }
+                update_item_marzoni($item);
                 $newChildren = $newChildrenItem[$key];
                 foreach ($newChildren as $val) {
                     if (empty($val['marzine'])) {
@@ -564,6 +570,16 @@ class Purchase_orders_model extends CRM_Model
 
             return $purchase_order;
         }
+        return $this->db->get()->result_array();
+    }
+
+    public function get_order_number()
+    {
+        $this->db->select(['tblpurchaseorders.id', 'tblpurchaseorders.order_number']);
+        $this->db->from('tblpurchaseorders');
+//        $this->db->join('tblcustomerwarehouses', 'tblcustomerwarehouses.id = tblpurchaseorders.warehouse', 'left');
+        $this->db->where('year', date('Y'));
+
         return $this->db->get()->result_array();
     }
 }

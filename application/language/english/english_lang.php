@@ -4164,3 +4164,8 @@ $lang['goods_receives_supplier'] = 'Supplier';
 $lang['goods_approved_by'] = 'Approved By';
 $lang['goods_is_approved'] = 'Is Approve';
 $lang['goods_approved_date'] = 'Approved Date';
+
+$lang['purchase_order_number_prefix'] = 'Purchase Order Number Prefix';
+$lang['settings_sales_next_purchase_order_number'] = 'Next Purchase Order Number';
+$lang['settings_sales_purchase_order_number_format'] = 'Credit Purchase Order Format';
+$lang['purchase_order_number_decrement_on_delete'] = 'Decrement Credit Note Number On Delete.';

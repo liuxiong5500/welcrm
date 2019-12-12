@@ -22,7 +22,7 @@ class Invoice_items_model extends CRM_Model
                 $rateCurrencyColumns .= $column . ',';
             }
         }
-        $this->db->select($rateCurrencyColumns . 'tblitems.id as itemid,art,description,dis,group_id,col,weight,width,color,style,unit_price,
+        $this->db->select($rateCurrencyColumns . 'tblitems.id as itemid,art,description,dis,group_id,col,weight,width,color,style,unit_price,marzoni,
             t1.taxrate as taxrate,t1.id as taxid,t1.name as taxname,
             t2.taxrate as taxrate_2,t2.id as taxid_2,t2.name as taxname_2,
             tblitems_groups.name as group_name');

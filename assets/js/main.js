@@ -6103,7 +6103,8 @@ function record_payment(id) {
 function add_item_to_preview(id) {
     requestGetJSON('invoice_items/get_item_by_id/' + id).done(function (response) {
         clear_item_preview_values();
-
+        $('.main input[name="item_id"]').val(id);
+        $('.main input[name="marzoni"]').val(response.marzoni);
         $('.main input[name="art"]').val(response.art);
         $('.main input[name="dis"]').val(response.dis);
         $('.main input[name="col"]').val(response.col);
@@ -6224,6 +6225,8 @@ function clear_item_preview_values(default_taxes) {
     previewArea.find('select.tax').selectpicker('val', last_taxes_applied);
     previewArea.find('input[name="rate"]').val('');
     previewArea.find('input[name="unit"]').val('');
+    previewArea.find('input[name="item_id"]').val('');
+    previewArea.find('input[name="marzoni"]').val('');
 
     $('input[name="task_id"]').val('');
     $('input[name="expense_id"]').val('');
@@ -7692,6 +7695,7 @@ function add_item_to_table2(data, itemid, merge_invoice, bill_expense) {
         // order input
         table_row += '<input type="hidden" class="order" name="newitems[' + item_key + '][order]">';
         table_row += '<input type="hidden" class="not_shipped" value="">';
+        table_row += '<input type="hidden" class="item_id" name="newitems[' + item_key + '][item_id]" value="' + data.item_id + '">';
 
         table_row += '</td>';
 
@@ -7883,6 +7887,7 @@ function get_item_preview_values2() {
     response.amount = $('.main input[name="amount"]').val();
     response.ex_mill = $('.main input[name="ex_mill"]').val();
     response.eta_date = $('.main input[name="eta_date"]').val();
+    response.item_id = $('.main input[name="item_id"]').val();
     return response;
 }
 
@@ -7911,6 +7916,7 @@ function clear_item_preview_values2(default_taxes) {
     previewArea.find('input[name="amount"]').val('');
     previewArea.find('input[name="ex_mill"]').val('');
     previewArea.find('input[name="eta_date"]').val('');
+    previewArea.find('input[name="item_id"]').val('');
 
     $('input[name="task_id"]').val('');
     $('input[name="expense_id"]').val('');

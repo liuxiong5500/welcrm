@@ -16,6 +16,7 @@
                         <div class="alert alert-warning affect-warning hide">
                             <?php echo _l('changing_items_affect_warning'); ?>
                         </div>
+                        <?php echo render_input('marzoni','purchase_order_marzoni'); ?>
                         <?php echo render_input('art','purchase_order_art'); ?>
                         <?php echo render_input('dis','purchase_order_dis'); ?>
                         <?php echo render_input('col','purchase_order_col'); ?>
@@ -161,6 +162,7 @@ function init_item_js() {
 
         var $itemModal = $('#sales_item_modal');
         $('input[name="itemid"]').val('');
+
         $itemModal.find('input').not('input[type="hidden"]').val('');
         $itemModal.find('textarea').val('');
         $itemModal.find('select').selectpicker('val', '').selectpicker('refresh');
@@ -177,8 +179,17 @@ function init_item_js() {
             $('input[name="itemid"]').val(id);
 
             requestGetJSON('invoice_items/get_item_by_id/' + id).done(function (response) {
-                $itemModal.find('input[name="description"]').val(response.description);
-                $itemModal.find('textarea[name="long_description"]').val(response.long_description.replace(/(<|<)br\s*\/*(>|>)/g, " "));
+                $itemModal.find('input[name="art"]').val(response.art);
+                $itemModal.find('input[name="dis"]').val(response.dis);
+                $itemModal.find('input[name="col"]').val(response.col);
+                $itemModal.find('input[name="weight"]').val(response.weight);
+                $itemModal.find('input[name="width"]').val(response.width);
+                $itemModal.find('textarea[name="color"]').val(response.color);
+                $itemModal.find('textarea[name="style"]').val(response.style);
+                $itemModal.find('input[name="unit_price"]').val(response.unit_price);
+                $itemModal.find('input[name="marzoni"]').val(response.marzoni);
+                $itemModal.find('textarea[name="description"]').val(response.description);
+                // $itemModal.find('textarea[name="long_description"]').val(response.long_description.replace(/(<|<)br\s*\/*(>|>)/g, " "));
                 $itemModal.find('input[name="rate"]').val(response.rate);
                 $itemModal.find('input[name="unit"]').val(response.unit);
                 $('select[name="tax"]').selectpicker('val', response.taxid).change();

@@ -215,6 +215,33 @@ function get_purchase_order_status_by_id($id)
     return $status;
 }
 
+function get_purchase_order_number()
+{
+    $CI = &get_instance();
+    if (!class_exists('purchase_orders_model')) {
+        $CI->load->model('purchase_orders_model');
+    }
+
+    $orderNumber = $CI->purchase_orders_model->get_order_number();
+
+    $numberArr = [];
+    foreach ($orderNumber as $v) {
+        $numberArr[] = substr($v['order_number'], -6);
+    }
+    asort($numberArr);
+    $end = end($numberArr);
+
+    $po = get_option('purchase_order_prefix');
+
+    $m = date('m');
+    if ($m < 10) {
+        $m = '0'.$m;
+    }
+
+    return $po.date('Y').$m.'/'.sprintf('%06s', $end + 1);
+}
+
+
 function get_payment_term_name_by_id($id)
 {
     $CI = &get_instance();

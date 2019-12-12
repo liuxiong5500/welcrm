@@ -19,6 +19,9 @@
          <li role="presentation">
             <a href="#proposals" aria-controls="proposals" role="tab" data-toggle="tab"><?php echo _l('proposals'); ?></a>
          </li>
+          <li role="presentation">
+              <a href="#purchase_order" aria-controls="purchase_order" role="tab" data-toggle="tab"><?php echo _l('purchase_order'); ?></a>
+          </li>
       </ul>
    </div>
 </div>
@@ -338,4 +341,24 @@
     }
     ?>
  </div>
+    <div role="tabpanel" class="tab-pane" id="purchase_order">
+        <div class="form-group">
+            <label class="control-label" for="purchase_order_prefix"><?php echo _l('purchase_order_number_prefix'); ?></label>
+            <input type="text" name="settings[purchase_order_prefix]" id="purchase_order_prefix" class="form-control" value="<?php echo get_option('purchase_order_prefix'); ?>">
+        </div>
+        <hr />
+        <i class="fa fa-question-circle pull-left" data-toggle="tooltip" data-title="<?php echo _l('settings_sales_next_invoice_number_tooltip'); ?>"></i>
+        <?php echo render_input('settings[next_purchase_order_number]','settings_sales_next_purchase_order_number',get_option('next_purchase_order_number')); ?>
+        <hr />
+        <div class="form-group">
+            <label for="purchase_order_number_format" class="control-label clearfix"><?php echo _l('settings_sales_purchase_order_number_format'); ?></label>
+            <div class="radio radio-primary radio-inline">
+                <input type="radio" name="settings[purchase_order_number_format]" value="4" id="cn_year_month_based" <?php if(get_option('purchase_order_number_format') == '4'){echo 'checked';} ?>>
+                <label for="cn_year_month_based">YYYYMM/000001</label>
+            </div>
+        </div>
+        <hr />
+        <?php render_yes_no_option('purchase_order_number_decrement_on_delete','purchase_order_number_decrement_on_delete','purchase_order_number_decrement_on_delete_help'); ?>
+        <hr />
+    </div>
 </div>

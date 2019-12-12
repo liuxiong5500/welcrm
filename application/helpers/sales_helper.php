@@ -674,6 +674,7 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
     $CI = &get_instance();
 
     $CI->db->insert('tblitems_in', [
+        'item_id' => $item['item_id'],
         'marzoni' => $item['marzoni'],
         'art' => $item['art'],
         'dis' => $item['dis'],
@@ -701,6 +702,31 @@ function add_new_sales_item_post($item, $rel_id, $rel_type)
     }
 
     return $id;
+}
+
+function update_item_marzoni ($item)
+{
+
+    $CI = &get_instance();
+    $CI->db->select('marzoni');
+    $CI->db->from('tblitems');
+    $CI->db->where('id', $item['item_id']);
+    $result = $CI->db->get()->row();
+
+    if (empty($result->marzoni)) {
+        $update = [
+            'marzoni' => $item['marzoni'],
+        ];
+
+        $CI = &get_instance();
+        $CI->db->where('id', $item['item_id']);
+        $CI->db->update('tblitems', $update);
+
+        return $CI->db->affected_rows() > 0 ? true : false;
+    } else {
+        return true;
+    }
+
 }
 
 function add_new_children_item_post($item, $itemId = 0)
