@@ -3,7 +3,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class Roles_model extends CRM_Model
 {
-    private $perm_statements = ['view', 'view_own', 'edit', 'create', 'delete'];
+    private $perm_statements = ['view', 'view_own', 'edit', 'create', 'delete', 'approve'];
 
     public function __construct()
     {
@@ -124,11 +124,8 @@ class Roles_model extends CRM_Model
             $affectedRows++;
         }
 
-
         $all_permissions = $this->roles_model->get_permissions();
-        if (total_rows('tblrolepermissions', [
-            'roleid' => $id,
-        ]) == 0) {
+        if (total_rows('tblrolepermissions', ['roleid' => $id]) == 0) {
             foreach ($all_permissions as $p) {
                 $_ins                 = [];
                 $_ins['roleid']       = $id;
