@@ -4,11 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 $aColumns = [
     'description',
-    'long_description',
+    'marzoni',
     'tblitems.rate',
     't1.taxrate as taxrate_1',
     't2.taxrate as taxrate_2',
-    'unit',
+    'unit_price',
     'tblitems_groups.name',
     ];
 $sIndexColumn = 'id';

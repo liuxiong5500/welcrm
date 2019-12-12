@@ -17,11 +17,11 @@
           <?php
           $table_data = array(
             _l('invoice_items_list_description'),
-            _l('invoice_item_long_description'),
+            _l('purchase_order_marzoni'),
             _l('invoice_items_list_rate'),
             _l('tax_1'),
             _l('tax_2'),
-            _l('unit'),
+            _l('purchase_order_unit_price'),
             _l('item_group_name'));
             $cf = get_custom_fields('items');
             foreach($cf as $custom_field) {
