@@ -436,6 +436,7 @@ class Purchase_orders_model extends CRM_Model
                     $affectedRows++;
                 }
             }
+            update_item_marzoni($item);
         }
 
         $newChildrenItems = [];
