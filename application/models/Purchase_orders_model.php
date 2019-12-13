@@ -244,6 +244,10 @@ class Purchase_orders_model extends CRM_Model
             unset($data['custom_fields']);
         }
 
+        if (isset($data['item_id'])) {
+            unset($data['item_id']);
+        }
+
         if (isset($data['marzoni'])) {
             unset($data['marzoni']);
         }
